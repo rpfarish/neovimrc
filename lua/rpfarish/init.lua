@@ -1,41 +1,9 @@
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
-
 require("rpfarish.remap")
 require("rpfarish.set")
 
-vim.opt.swapfile = false
-vim.opt.backup = false
-vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
-vim.opt.undofile = true
-vim.o.colorcolumn = "80"
 vim.schedule(function()
 	vim.o.clipboard = "unnamedplus"
 end)
-vim.o.breakindent = true
-vim.o.undofile = true
-vim.o.ignorecase = true
-vim.o.smartcase = true
-vim.o.signcolumn = "yes"
-vim.o.updatetime = 250
-vim.o.timeoutlen = 300
-vim.o.splitright = true
-vim.o.splitbelow = true
--- vim.o.list = true
--- vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
-vim.o.inccommand = "split"
-vim.o.cursorline = true
-vim.o.scrolloff = 8
-vim.o.confirm = true
-vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
-vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
-vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
-
--- NOTE: Window navigation
-vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
-vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
-vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
-vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
 
 -- [[ Basic Autocommands ]]
 vim.api.nvim_create_autocmd("TextYankPost", {
@@ -543,25 +511,27 @@ require("lazy").setup({
 				harpoon.ui:toggle_quick_menu(harpoon:list())
 			end)
 
-			vim.keymap.set("n", "<C-h>", function()
+			vim.keymap.set("n", "<C-j>", function()
 				harpoon:list():select(1)
 			end)
-			vim.keymap.set("n", "<C-t>", function()
+			vim.keymap.set("n", "<C-k>", function()
 				harpoon:list():select(2)
 			end)
-			vim.keymap.set("n", "<C-n>", function()
+			vim.keymap.set("n", "<C-l>", function()
 				harpoon:list():select(3)
 			end)
-			vim.keymap.set("n", "<C-s>", function()
+			vim.keymap.set("n", "<C-h>", function()
 				harpoon:list():select(4)
 			end)
 
 			-- Toggle previous & next buffers stored within Harpoon list
-			vim.keymap.set("n", "<C-S-P>", function()
+			vim.keymap.set("n", "<leader>j", function()
 				harpoon:list():prev()
+				vim.cmd("normal! zz")
 			end)
-			vim.keymap.set("n", "<C-S-N>", function()
+			vim.keymap.set("n", "<leader>k", function()
 				harpoon:list():next()
+				vim.cmd("normal! zz")
 			end)
 		end,
 	},
