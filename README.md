@@ -2,7 +2,7 @@
 
 <div align="center">
   
-![NeoSlick](https://img.shields.io/badge/NeoSlick-Modern%20Neovim%20Config-8A2BE2?style=for-the-badge&logo=neovim&logoColor=white)
+![NeoRyan](https://img.shields.io/badge/NeoRyan-Modern%20Neovim%20Config-8A2BE2?style=for-the-badge&logo=neovim&logoColor=white)
 [![Lua](https://img.shields.io/badge/Made%20with-Lua-2C2D72?style=for-the-badge&logo=lua&logoColor=white)](https://www.lua.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 [![Neovim](https://img.shields.io/badge/Neovim-0.9%2B-57A143?style=for-the-badge&logo=neovim&logoColor=white)](https://neovim.io)
@@ -10,7 +10,7 @@
 </div>
 
 <div align="center">
-<img src="/api/placeholder/800/400" alt="NeoSlick Screenshot">
+<img src="/api/placeholder/800/400" alt="NeoRyan Screenshot">
 <p><em>A sleek, fast, and functional Neovim configuration for modern developers</em></p>
 </div>
 
@@ -49,7 +49,7 @@ nvim
 
 ## ⌨️ Key Bindings
 
-NeoSlick uses Space as the leader key. Here are some of the most important keymaps:
+NeoRyan uses Space as the leader key. Here are some of the most important keymaps:
 
 ### General
 
@@ -96,7 +96,7 @@ NeoSlick uses Space as the leader key. Here are some of the most important keyma
 
 ## 🔌 Included Plugins
 
-NeoSlick includes a carefully curated selection of plugins:
+NeoRyan includes a carefully curated selection of plugins:
 
 - **[lazy.nvim](https://github.com/folke/lazy.nvim)** - Plugin manager
 - **[telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)** - Fuzzy finder
@@ -167,6 +167,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ---
 
 <div align="center">
-  <p>⭐ If you find NeoSlick useful, please consider giving it a star on GitHub! ⭐</p>
-  <p>Made with ❤️ by [Your Name]</p>
+  <p>⭐ If you find NeoRyan useful, please consider giving it a star on GitHub! ⭐</p>
+  <p>Made with ❤️ by Ryan</p>
 </div>
