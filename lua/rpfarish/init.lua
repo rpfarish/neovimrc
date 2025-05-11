@@ -51,7 +51,7 @@ vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
 -- [[ Basic Autocommands ]]
 vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight when yanking (copying) text",
-	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
+	group = vim.api.nvim_create_augroup("rpfarish-highlight-yank", { clear = true }),
 	callback = function()
 		vim.hl.on_yank()
 	end,
@@ -190,7 +190,7 @@ require("lazy").setup({
 		},
 		config = function()
 			vim.api.nvim_create_autocmd("LspAttach", {
-				group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
+				group = vim.api.nvim_create_augroup("rpfarish-lsp-attach", { clear = true }),
 				callback = function(event)
 					local map = function(keys, func, desc, mode)
 						mode = mode or "n"
@@ -258,7 +258,7 @@ require("lazy").setup({
 						)
 					then
 						local highlight_augroup =
-							vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
+							vim.api.nvim_create_augroup("rpfarish-lsp-highlight", { clear = false })
 						vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
 							buffer = event.buf,
 							group = highlight_augroup,
@@ -272,10 +272,10 @@ require("lazy").setup({
 						})
 
 						vim.api.nvim_create_autocmd("LspDetach", {
-							group = vim.api.nvim_create_augroup("kickstart-lsp-detach", { clear = true }),
+							group = vim.api.nvim_create_augroup("rpfarish-lsp-detach", { clear = true }),
 							callback = function(event2)
 								vim.lsp.buf.clear_references()
-								vim.api.nvim_clear_autocmds({ group = "kickstart-lsp-highlight", buffer = event2.buf })
+								vim.api.nvim_clear_autocmds({ group = "rpfarish-lsp-highlight", buffer = event2.buf })
 							end,
 						})
 					end
@@ -349,7 +349,7 @@ require("lazy").setup({
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
 			require("mason-lspconfig").setup({
-				ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
+				ensure_installed = {}, -- explicitly set to an empty table (rpfarish populates installs via mason-tool-installer)
 				automatic_installation = false,
 				handlers = {
 					function(server_name)
@@ -526,13 +526,5 @@ require("lazy").setup({
 			indent = { enable = true, disable = { "ruby" } },
 		},
 	},
-	-- require 'kickstart.plugins.debug',
-	-- require("kickstart.plugins.indent_line"),
-	-- require 'kickstart.plugins.lin t',
-	-- require 'kickstart.plugins.autopairs',
-	-- require 'kickstart.plugins.neo-tree',
-	-- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
-
-	-- { import = 'custom.plugins' },
 })
 -- mode line
