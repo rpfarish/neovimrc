@@ -325,6 +325,10 @@ require("lazy").setup({
 			local capabilities = require("blink.cmp").get_lsp_capabilities()
 
 			local servers = {
+				isort = {},
+				black = {},
+				prettierd = {},
+				prettier = {},
 				pyright = {},
 				-- rust_analyzer = {},
 				-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -390,7 +394,7 @@ require("lazy").setup({
 				else
 					return {
 						timeout_ms = 500,
-						lsp_format = "fallback",
+						lsp_format = "never",
 					}
 				end
 			end,
