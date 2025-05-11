@@ -1,21 +1,8 @@
-require("rpfarish.remap")
-
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
-vim.g.have_nerd_font = true
-vim.o.number = true
-vim.o.relativenumber = true
-vim.o.mouse = "a"
-vim.o.showmode = false
 
-vim.opt.tabstop = 4
-vim.opt.softtabstop = 4
-vim.opt.shiftwidth = 4
-vim.opt.expandtab = true
-
-vim.opt.smartindent = true
-
-vim.opt.wrap = false
+require("rpfarish.remap")
+require("rpfarish.set")
 
 vim.opt.swapfile = false
 vim.opt.backup = false
@@ -120,6 +107,12 @@ require("lazy").setup({
 			{ "nvim-tree/nvim-web-devicons", enabled = vim.g.have_nerd_font },
 		},
 		config = function()
+			local builtin = require("telescope.builtin")
+			vim.keymap.set("n", "<leader>pf", builtin.find_files, { desc = "Search [P]roject [F]iles" })
+			vim.keymap.set("n", "<C-p>", builtin.git_files, { desc = "Search Git [P]roject Files" })
+			vim.keymap.set("n", "<leader>ps", function()
+				builtin.grep_string({ search = vim.fn.input("Grep > ") })
+			end, { desc = "[P]roject [S]earch for text" })
 			require("telescope").setup({
 				extensions = {
 					["ui-select"] = {
@@ -533,4 +526,3 @@ require("lazy").setup({
 		},
 	},
 })
--- mode line
