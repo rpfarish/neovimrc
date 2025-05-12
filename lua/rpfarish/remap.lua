@@ -12,3 +12,6 @@ vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
 vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
 vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
 vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
+
+vim.keymap.set("n", "<C-d>", "<C-d>zz")
+vim.keymap.set("n", "<C-u>", "<C-u>zz")

@@ -1,4 +1,4 @@
-return { 
+return {
 	"tpope/vim-sleuth",
 	{ -- Adds git related signs to the gutter, as well as utilities for managing changes
 		"lewis6991/gitsigns.nvim",
@@ -98,7 +98,7 @@ return {
 	{
 		-- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
 		-- used for completion, annotations and signatures of Neovim apis
-		"folke/lazydev.nvim",
+		"rpfarish/lazydev.nvim",
 		ft = "lua",
 		opts = {
 			library = {
@@ -357,7 +357,7 @@ return {
 				dependencies = {},
 				opts = {},
 			},
-			"folke/lazydev.nvim",
+			"rpfarish/lazydev.nvim",
 		},
 		--- @module 'blink.cmp'
 		--- @type blink.cmp.Config
@@ -440,6 +440,9 @@ return {
 	{ -- Highlight, edit, and navigate code
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
+		-- build = function()
+		--   pcall(require("nvim-treesitter.install").update { with_sync = true })
+		-- end,
 		main = "nvim-treesitter.configs",
 		opts = {
 			ensure_installed = {
@@ -504,5 +507,5 @@ return {
 				vim.cmd("normal! zz")
 			end)
 		end,
-	}
+	},
 }
