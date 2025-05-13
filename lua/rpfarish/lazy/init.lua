@@ -1,4 +1,5 @@
 return {
+	"ThePrimeagen/vim-be-good",
 	"tpope/vim-sleuth",
 	{ -- Adds git related signs to the gutter, as well as utilities for managing changes
 		"lewis6991/gitsigns.nvim",
@@ -115,6 +116,7 @@ return {
 			{ "mason-org/mason.nvim", opts = {} },
 			"mason-org/mason-lspconfig.nvim",
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
+			"mfussenegger/nvim-lint",
 
 			-- Useful status updates for LSP.
 			{ "j-hui/fidget.nvim", opts = {} },
@@ -148,7 +150,7 @@ return {
 					-- Jump to the definition of the word under your cursor.
 					--  This is where a variable was first declared, or where a function is defined, etc.
 					--  To jump back, press <C-t>.
-					map("grd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
+					map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
 
 					-- WARN: This is not Goto Definition, this is Goto Declaration.
 					--  For example, in C this would take you to the header.
@@ -256,11 +258,23 @@ return {
 			local capabilities = require("blink.cmp").get_lsp_capabilities()
 
 			local servers = {
+				marksman = {
+					filetypes = { "markdown", "md" },
+				},
+				markdownlint = {},
 				isort = {},
 				black = {},
 				prettierd = {},
 				prettier = {},
-				pyright = {},
+				-- pyright = {},
+				ruff = { -- Add ruff server configuration
+					cmd = { "ruff", "server" },
+					settings = {
+						ruff = {
+							-- Optional: Add custom Ruff settings here
+						},
+					},
+				},
 				-- rust_analyzer = {},
 				-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
 				-- Some languages (like typescript) have entire language plugins that can be useful:
@@ -281,10 +295,24 @@ return {
 
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
+				"marksman",
 				"stylua", -- Used to format Lua code
+				"ruff",
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
+			-- Add this to your plugin setup
 
+			-- Then in your config:
+			require("lint").linters_by_ft = {
+				markdown = { "markdownlint" },
+			}
+
+			-- Auto-trigger linting
+			vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, {
+				callback = function()
+					require("lint").try_lint()
+				end,
+			})
 			require("mason-lspconfig").setup({
 				ensure_installed = {}, -- explicitly set to an empty table (rpfarish populates installs via mason-tool-installer)
 				automatic_installation = false,
@@ -330,6 +358,7 @@ return {
 				end
 			end,
 			formatters_by_ft = {
+				markdown = { "prettierd", "prettier", stop_after_first = true },
 				lua = { "stylua" },
 				-- Conform can also run multiple formatters sequentially
 				python = { "isort", "black" },

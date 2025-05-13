@@ -53,45 +53,45 @@ NeoRyan uses Space as the leader key. Here are some of the most important keymap
 
 ### General
 
-| Keybinding | Description |
-|------------|-------------|
-| `<Space>/` | Fuzzy search in current buffer |
-| `<Space><Space>` | Find existing buffers |
-| `<Esc>` | Clear search highlighting |
+| Keybinding       | Description                    |
+| ---------------- | ------------------------------ |
+| `<Space>/`       | Fuzzy search in current buffer |
+| `<Space><Space>` | Find existing buffers          |
+| `<Esc>`          | Clear search highlighting      |
 
 ### Search with Telescope
 
-| Keybinding | Description |
-|------------|-------------|
-| `<Space>sf` | Search Files |
-| `<Space>sg` | Search by Grep |
-| `<Space>sh` | Search Help |
-| `<Space>sk` | Search Keymaps |
+| Keybinding  | Description         |
+| ----------- | ------------------- |
+| `<Space>sf` | Search Files        |
+| `<Space>sg` | Search by Grep      |
+| `<Space>sh` | Search Help         |
+| `<Space>sk` | Search Keymaps      |
 | `<Space>s.` | Search Recent Files |
 
 ### LSP Navigation
 
-| Keybinding | Description |
-|------------|-------------|
-| `grd` | Go to Definition |
-| `grr` | Find References |
-| `grn` | Rename |
-| `gra` | Code Action |
-| `grt` | Go to Type Definition |
+| Keybinding | Description                                                          |
+| ---------- | -------------------------------------------------------------------- |
+| `gd`       | Go to Definition (Overrides default vim gd in favor of lsp aware gd) |
+| `grr`      | Find References                                                      |
+| `grn`      | Rename                                                               |
+| `gra`      | Code Action                                                          |
+| `grt`      | Go to Type Definition                                                |
 
 ### Window Management
 
-| Keybinding | Description |
-|------------|-------------|
-| `<C-S-h>` | Move window to the left |
-| `<C-S-j>` | Move window down |
-| `<C-S-k>` | Move window up |
-| `<C-S-l>` | Move window to the right |
+| Keybinding | Description              |
+| ---------- | ------------------------ |
+| `<C-S-h>`  | Move window to the left  |
+| `<C-S-j>`  | Move window down         |
+| `<C-S-k>`  | Move window up           |
+| `<C-S-l>`  | Move window to the right |
 
 ### Formatting
 
-| Keybinding | Description |
-|------------|-------------|
+| Keybinding | Description   |
+| ---------- | ------------- |
 | `<Space>f` | Format buffer |
 
 ## 🔌 Included Plugins
