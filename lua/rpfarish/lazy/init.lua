@@ -309,7 +309,7 @@ return {
 				black = {},
 				prettierd = {},
 				prettier = {},
-				-- pyright = {},
+				pyright = {},
 				ruff = { -- Add ruff server configuration
 					cmd = { "ruff", "server" },
 					settings = {
