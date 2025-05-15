@@ -22,8 +22,8 @@ vim.api.nvim_create_autocmd("FileType", {
 		-- Create a buffer-local mapping for netrw refresh that uses a different key
 		vim.api.nvim_buf_set_keymap(0, "n", "<C-r>", "<Plug>NetrwRefresh", { silent = true })
 
-		-- Disable the default C-l mapping in netrw buffers to prevent conflict
-		vim.api.nvim_buf_del_keymap(0, "n", "<C-l>")
+		-- Safely try to delete the <C-l> mapping, ignoring errors if it doesn't exist
+		pcall(vim.api.nvim_buf_del_keymap, 0, "n", "<C-l>")
 
 		-- Make our global C-l mapping work in netrw by explicitly defining it for this buffer
 	end,
