@@ -16,6 +16,8 @@ vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
 
+vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
+
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "netrw",
 	callback = function()
