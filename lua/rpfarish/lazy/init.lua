@@ -612,7 +612,17 @@ return {
 		"mbbill/undotree",
 		init = function()
 			-- Open undotree in a vertical split on the right
-			vim.g.undotree_WindowLayout = 1
+			-- Load Undotree layout setting if it exists
+			local data_path = vim.fn.stdpath("data")
+			local undotree_dir = data_path .. "/undotree"
+			local undotree_config_file = undotree_dir .. "/layout.lua"
+
+			if vim.fn.filereadable(undotree_config_file) == 1 then
+				dofile(undotree_config_file)
+			else
+				-- Default setting if no saved config
+				vim.g.undotree_WindowLayout = 1
+			end
 
 			-- Show the help line at the bottom of undotree
 			vim.g.undotree_HelpLine = 0
@@ -628,17 +638,35 @@ return {
 			vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle, { desc = "Toggle [U]ndo Tree" })
 			-- Concise function to toggle undotree window layout between 1 and 2
 			local function toggle_undotree_layout()
+				-- Toggle the layout
 				if vim.g.undotree_WindowLayout == 1 then
 					vim.g.undotree_WindowLayout = 2
 				else
 					vim.g.undotree_WindowLayout = 1
 				end
 
+				-- Apply the change immediately if Undotree is open
 				vim.cmd.UndotreeToggle()
 				vim.cmd.UndotreeToggle()
-				print("Undotree layout set to " .. vim.g.undotree_WindowLayout)
-			end
 
+				-- Save the setting to a file
+				local data_path = vim.fn.stdpath("data")
+				local undotree_dir = data_path .. "/undotree"
+				local undotree_config_file = undotree_dir .. "/layout.lua"
+
+				-- Create directory if it doesn't exist
+				if vim.fn.isdirectory(undotree_dir) == 0 then
+					vim.fn.mkdir(undotree_dir, "p", "0o700")
+				end
+				local file = io.open(undotree_config_file, "w")
+				if file then
+					file:write("vim.g.undotree_WindowLayout = " .. vim.g.undotree_WindowLayout)
+					file:close()
+					print("Undotree layout set to " .. vim.g.undotree_WindowLayout .. " (saved)")
+				else
+					print("Undotree layout set to " .. vim.g.undotree_WindowLayout .. " (couldn't save)")
+				end
+			end
 			-- New keymap to toggle undotree layout
 			vim.keymap.set("n", "<leader>U", toggle_undotree_layout, { desc = "Toggle [U]ndotree Layout" })
 			-- Create keymap to hide Undotree with double Escape
