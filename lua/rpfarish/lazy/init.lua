@@ -608,4 +608,43 @@ return {
 			})
 		end,
 	},
+	{
+		"mbbill/undotree",
+		init = function()
+			-- Open undotree in a vertical split on the right
+			vim.g.undotree_WindowLayout = 1
+
+			-- Show the help line at the bottom of undotree
+			vim.g.undotree_HelpLine = 0
+
+			-- Disable auto open when undoing/redoing
+			vim.g.undotree_SetFocusWhenToggle = 1
+
+			-- Optionally hide help in Undotree window
+			vim.g.undotree_ShortIndicators = 1
+			vim.g.undotree_SplitWidth = 30
+		end,
+		config = function()
+			vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle, { desc = "Toggle [U]ndo Tree" })
+			-- Concise function to toggle undotree window layout between 1 and 2
+			local function toggle_undotree_layout()
+				if vim.g.undotree_WindowLayout == 1 then
+					vim.g.undotree_WindowLayout = 2
+				else
+					vim.g.undotree_WindowLayout = 1
+				end
+
+				vim.cmd.UndotreeToggle()
+				vim.cmd.UndotreeToggle()
+				print("Undotree layout set to " .. vim.g.undotree_WindowLayout)
+			end
+
+			-- New keymap to toggle undotree layout
+			vim.keymap.set("n", "<leader>U", toggle_undotree_layout, { desc = "Toggle [U]ndotree Layout" })
+			-- Create keymap to hide Undotree with double Escape
+			vim.keymap.set("n", "<Esc><Esc>", function()
+				vim.cmd("UndotreeHide")
+			end, { desc = "Hide Undotree" })
+		end,
+	},
 }
