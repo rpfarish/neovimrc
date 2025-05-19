@@ -1,10 +1,7 @@
 return {
 	"mbbill/undotree",
 	init = function()
-		-- Open undotree in a vertical split on the right
-		-- Load Undotree layout setting if it exists
-		local data_path = vim.fn.stdpath("data")
-		local undotree_dir = data_path .. "/undotree"
+		local undotree_dir = vim.fn.stdpath("data") .. "/undotree"
 		local undotree_config_file = undotree_dir .. "/layout.lua"
 
 		if vim.fn.filereadable(undotree_config_file) == 1 then
@@ -33,8 +30,7 @@ return {
 			vim.cmd.UndotreeToggle()
 			vim.cmd.UndotreeToggle()
 
-			local data_path = vim.fn.stdpath("data")
-			local undotree_dir = data_path .. "/undotree"
+			local undotree_dir = vim.fn.stdpath("data") .. "/undotree"
 			local undotree_config_file = undotree_dir .. "/layout.lua"
 
 			if vim.fn.isdirectory(undotree_dir) == 0 then

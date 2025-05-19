@@ -539,74 +539,7 @@ return {
 			indent = { enable = true, disable = { "ruby" } },
 		},
 	},
-	{
-		"ThePrimeagen/harpoon",
-		branch = "harpoon2",
-		dependencies = { "nvim-lua/plenary.nvim" },
-		config = function()
-			local harpoon = require("harpoon")
-
-			-- REQUIRED
-			harpoon:setup()
-			-- REQUIRED
-
-			vim.keymap.set("n", "<leader>a", function()
-				harpoon:list():add()
-			end)
-			vim.keymap.set("n", "<C-e>", function()
-				harpoon.ui:toggle_quick_menu(harpoon:list())
-			end)
-
-			vim.keymap.set("n", "<C-j>", function()
-				harpoon:list():select(1)
-			end)
-			vim.keymap.set("n", "<C-k>", function()
-				harpoon:list():select(2)
-			end)
-			vim.keymap.set("n", "<C-l>", function()
-				harpoon:list():select(3)
-			end)
-			vim.keymap.set("n", "<C-h>", function()
-				harpoon:list():select(4)
-			end)
-
-			-- Toggle previous & next buffers stored within Harpoon list
-			vim.keymap.set("n", "<leader>j", function()
-				harpoon:list():prev()
-				vim.cmd("normal! zz")
-			end)
-			vim.keymap.set("n", "<leader>k", function()
-				harpoon:list():next()
-				vim.cmd("normal! zz")
-			end)
-		end,
-	},
-	{
-		"lukas-reineke/indent-blankline.nvim",
-		main = "ibl",
-		config = function()
-			local hooks = require("ibl.hooks")
-
-			-- Define a single highlight group for active scope
-			hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
-				vim.api.nvim_set_hl(0, "IblScope", { fg = "#8f8f8f" }) -- soft gray
-				-- other color is #3b4261 darker gray
-				vim.api.nvim_set_hl(0, "IblIndent", { fg = "NONE", nocombine = true })
-			end)
-
-			require("ibl").setup({
-				indent = {
-					highlight = { "IblIndent" }, -- Required, even if visually hidden
-					char = "│", -- default line character
-				},
-				scope = {
-					enabled = true,
-					show_start = false,
-					show_end = false,
-					highlight = { "IblScope" }, -- Only highlight the current scope
-				},
-			})
-		end,
-	},
+	require("rpfarish.lazy.harpoon"),
 	require("rpfarish.lazy.undotree"),
+	require("rpfarish.lazy.indent-blankline"),
 }
