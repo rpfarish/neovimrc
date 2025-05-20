@@ -1,13 +1,12 @@
 return {
 	{
-
 		"ThePrimeagen/vim-be-good",
 		cmd = { "VimBeGood" },
 	},
 	"tpope/vim-sleuth",
 	{
 		"lewis6991/gitsigns.nvim",
-		event = { "BufReadPost", "BufNewFile" },
+		event = "VeryLazy",
 		opts = {
 			on_attach = function(bufnr)
 				local gitsigns = require("gitsigns")
@@ -63,7 +62,7 @@ return {
 	},
 	{ -- Useful plugin to show you pending keybinds.
 		"folke/which-key.nvim",
-		event = { "BufReadPost", "BufNewFile" },
+		event = "VeryLazy",
 		opts = {
 			delay = 2000,
 			icons = {
@@ -80,7 +79,25 @@ return {
 
 	{ -- Fuzzy Finder (files, lsp, etc)
 		"nvim-telescope/telescope.nvim",
-		event = "VimEnter",
+		cmd = "Telescope",
+		keys = {
+			{ "<leader>pf", desc = "Search [P]roject [F]iles" },
+			{ "<C-p>", desc = "Search Git [P]roject Files" },
+			{ "<leader>ps", desc = "[P]roject [S]earch for text" },
+			{ "<leader>sh", desc = "[S]earch [H]elp" },
+			{ "<leader>sk", desc = "[S]earch [K]eymaps" },
+			{ "<leader>sf", desc = "[S]earch [F]iles" },
+			{ "<leader>ss", desc = "[S]earch [S]elect Telescope" },
+			{ "<leader>sw", desc = "[S]earch current [W]ord" },
+			{ "<leader>sg", desc = "[S]earch by [G]rep" },
+			{ "<leader>sd", desc = "[S]earch [D]iagnostics" },
+			{ "<leader>sr", desc = "[S]earch [R]esume" },
+			{ "<leader>s.", desc = '[S]earch Recent Files ("." for repeat)' },
+			{ "<leader><leader>", desc = "[ ] Find existing buffers" },
+			{ "<leader>/", desc = "[/] Fuzzily search in current buffer" },
+			{ "<leader>s/", desc = "[S]earch [/] in Open Files" },
+			{ "<leader>sn", desc = "[S]earch [N]eovim files" },
+		},
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			{ -- If encountering errors, see telescope-fzf-native README for installation instructions
@@ -148,7 +165,6 @@ return {
 		-- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
 		-- used for completion, annotations and signatures of Neovim apis
 		"rpfarish/lazydev.nvim",
-		event = { "BufReadPost", "BufNewFile" },
 		ft = "lua",
 		opts = {
 			library = {
@@ -159,25 +175,21 @@ return {
 	{
 		-- Main LSP Configuration
 		"neovim/nvim-lspconfig",
+		event = { "LspAttach", "BufReadPre" },
 		dependencies = {
 			-- Automatically install LSPs and related tools to stdpath for Neovim
 			-- Mason must be loaded before its dependents so we need to set it up here.
-			{ "mason-org/mason.nvim", opts = {} },
-			"mason-org/mason-lspconfig.nvim",
-			"WhoIsSethDaniel/mason-tool-installer.nvim",
-			"mfussenegger/nvim-lint",
+			{ "mason-org/mason.nvim", cmd = { "Mason", "MasonInstall", "MasonUpdate" }, opts = {} },
+			{ "mason-org/mason-lspconfig.nvim", lazy = true },
+			{ "WhoIsSethDaniel/mason-tool-installer.nvim", lazy = true },
+			{ "mfussenegger/nvim-lint", event = { "BufWritePre" } },
 
 			-- Useful status updates for LSP.
 			{
 				"j-hui/fidget.nvim",
+				event = "LspAttach",
 				config = function()
-					vim.api.nvim_create_autocmd("VimEnter", {
-						callback = function()
-							vim.schedule(function()
-								require("fidget").setup()
-							end)
-						end,
-					})
+					require("fidget").setup()
 				end,
 			},
 
@@ -369,7 +381,7 @@ return {
 			}
 
 			-- Auto-trigger linting
-			vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, {
+			vim.api.nvim_create_autocmd({ "BufWritePost" }, { -- Removed BufEnter to reduce triggers
 				callback = function()
 					require("lint").try_lint()
 				end,
@@ -432,7 +444,7 @@ return {
 
 	{ -- Autocompletion
 		"saghen/blink.cmp",
-		event = { "BufReadPost", "BufNewFile" },
+		event = "InsertEnter", -- Only load when actually entering insert mode
 		version = "1.*",
 		dependencies = {
 			{
@@ -496,7 +508,7 @@ return {
 
 	{ -- Collection of various small independent plugins/modules
 		"echasnovski/mini.nvim",
-		event = { "BufReadPost", "BufNewFile" },
+		event = "VeryLazy", -- Load later in the startup process
 		config = function()
 			-- Better Around/Inside textobjects
 			--
@@ -524,11 +536,8 @@ return {
 	},
 	{ -- Highlight, edit, and navigate code
 		"nvim-treesitter/nvim-treesitter",
-		event = { "BufReadPost", "BufNewFile" },
+		event = { "BufReadPost", "BufNewFile" }, -- This plugin is important enough to keep its original events
 		build = ":TSUpdate",
-		-- build = function()
-		-- 	pcall(require("nvim-treesitter.install").update({ with_sync = true }))
-		-- end,
 		main = "nvim-treesitter.configs",
 		opts = {
 			ensure_installed = {
