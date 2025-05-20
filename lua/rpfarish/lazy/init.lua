@@ -611,4 +611,5 @@ return {
 	require("rpfarish.lazy.dashboard"),
 	-- require("rpfarish.lazy.oil"),
 	require("rpfarish.lazy.tjoil"),
+	require("rpfarish.lazy.trouble"),
 }
