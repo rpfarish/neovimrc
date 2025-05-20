@@ -612,4 +612,5 @@ return {
 	-- require("rpfarish.lazy.oil"),
 	require("rpfarish.lazy.tjoil"),
 	require("rpfarish.lazy.trouble"),
+	require("rpfarish.lazy.autopairs"),
 }
