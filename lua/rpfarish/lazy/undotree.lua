@@ -1,5 +1,6 @@
 return {
 	"mbbill/undotree",
+	event = { "BufReadPost", "BufNewFile" },
 	init = function()
 		local undotree_dir = vim.fn.stdpath("data") .. "/undotree"
 		local undotree_config_file = undotree_dir .. "/layout.lua"

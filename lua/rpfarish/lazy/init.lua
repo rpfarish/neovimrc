@@ -1,8 +1,13 @@
 return {
-	"ThePrimeagen/vim-be-good",
+	{
+
+		"ThePrimeagen/vim-be-good",
+		cmd = { "VimBeGood" },
+	},
 	"tpope/vim-sleuth",
 	{
 		"lewis6991/gitsigns.nvim",
+		event = { "BufReadPost", "BufNewFile" },
 		opts = {
 			on_attach = function(bufnr)
 				local gitsigns = require("gitsigns")
@@ -58,7 +63,7 @@ return {
 	},
 	{ -- Useful plugin to show you pending keybinds.
 		"folke/which-key.nvim",
-		event = "VimEnter", -- Sets the loading event to 'VimEnter'
+		event = { "BufReadPost", "BufNewFile" },
 		opts = {
 			delay = 2000,
 			icons = {
@@ -143,6 +148,7 @@ return {
 		-- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
 		-- used for completion, annotations and signatures of Neovim apis
 		"rpfarish/lazydev.nvim",
+		event = { "BufReadPost", "BufNewFile" },
 		ft = "lua",
 		opts = {
 			library = {
@@ -162,7 +168,18 @@ return {
 			"mfussenegger/nvim-lint",
 
 			-- Useful status updates for LSP.
-			{ "j-hui/fidget.nvim", opts = {} },
+			{
+				"j-hui/fidget.nvim",
+				config = function()
+					vim.api.nvim_create_autocmd("VimEnter", {
+						callback = function()
+							vim.schedule(function()
+								require("fidget").setup()
+							end)
+						end,
+					})
+				end,
+			},
 
 			"saghen/blink.cmp",
 		},
@@ -415,11 +432,12 @@ return {
 
 	{ -- Autocompletion
 		"saghen/blink.cmp",
-		event = "VimEnter",
+		event = { "BufReadPost", "BufNewFile" },
 		version = "1.*",
 		dependencies = {
 			{
 				"L3MON4D3/LuaSnip",
+				event = "InsertEnter",
 				version = "2.*",
 				build = (function()
 					if vim.fn.has("win32") == 1 or vim.fn.executable("make") == 0 then
@@ -453,7 +471,7 @@ return {
 				},
 			},
 
-			snippets = { preset = "luasnip" },
+			-- snippets = { preset = "luasnip" },
 			fuzzy = { implementation = "lua" },
 
 			signature = { enabled = true },
@@ -478,6 +496,7 @@ return {
 
 	{ -- Collection of various small independent plugins/modules
 		"echasnovski/mini.nvim",
+		event = { "BufReadPost", "BufNewFile" },
 		config = function()
 			-- Better Around/Inside textobjects
 			--
@@ -505,6 +524,7 @@ return {
 	},
 	{ -- Highlight, edit, and navigate code
 		"nvim-treesitter/nvim-treesitter",
+		event = { "BufReadPost", "BufNewFile" },
 		build = ":TSUpdate",
 		-- build = function()
 		-- 	pcall(require("nvim-treesitter.install").update({ with_sync = true }))

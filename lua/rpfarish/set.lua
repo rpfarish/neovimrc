@@ -18,6 +18,7 @@ vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 vim.g.python3_host_prog = "/usr/bin/python3"
 vim.opt.undofile = true
 vim.o.colorcolumn = "80"
+vim.loader.enable(true)
 vim.schedule(function()
 	vim.o.clipboard = "unnamedplus"
 end)
