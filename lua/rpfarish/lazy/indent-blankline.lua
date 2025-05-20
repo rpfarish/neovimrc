@@ -1,6 +1,7 @@
 return {
 	"lukas-reineke/indent-blankline.nvim",
 	main = "ibl",
+	event = { "BufReadPost", "BufNewfile" },
 	config = function()
 		local hooks = require("ibl.hooks")
 

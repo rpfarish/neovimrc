@@ -476,13 +476,6 @@ return {
 		end,
 	},
 
-	{
-		"folke/todo-comments.nvim",
-		event = "VimEnter",
-		dependencies = { "nvim-lua/plenary.nvim" },
-		opts = { signs = false },
-	},
-
 	{ -- Collection of various small independent plugins/modules
 		"echasnovski/mini.nvim",
 		config = function()
@@ -514,7 +507,7 @@ return {
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
 		-- build = function()
-		--   pcall(require("nvim-treesitter.install").update { with_sync = true })
+		-- 	pcall(require("nvim-treesitter.install").update({ with_sync = true }))
 		-- end,
 		main = "nvim-treesitter.configs",
 		opts = {
@@ -539,7 +532,9 @@ return {
 			indent = { enable = true, disable = { "ruby" } },
 		},
 	},
+	require("rpfarish.lazy.todo-comments"),
 	require("rpfarish.lazy.harpoon"),
 	require("rpfarish.lazy.undotree"),
 	require("rpfarish.lazy.indent-blankline"),
+	require("rpfarish.lazy.dashboard"),
 }
