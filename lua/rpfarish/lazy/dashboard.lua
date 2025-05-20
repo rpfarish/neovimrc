@@ -3,7 +3,6 @@ return {
 	event = "VimEnter",
 	config = function()
 		require("dashboard").setup({
-			theme = "doom",
 			config = {
 				header = {
 					" ",
