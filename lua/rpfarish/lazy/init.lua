@@ -610,4 +610,6 @@ return {
 	require("rpfarish.lazy.undotree"),
 	require("rpfarish.lazy.indent-blankline"),
 	require("rpfarish.lazy.dashboard"),
+	-- require("rpfarish.lazy.oil"),
+	require("rpfarish.lazy.tjoil"),
 }

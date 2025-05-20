@@ -19,7 +19,7 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
 
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = "netrw",
+	pattern = "oil",
 	callback = function()
 		-- Create a buffer-local mapping for netrw refresh that uses a different key
 		vim.api.nvim_buf_set_keymap(0, "n", "<C-r>", "<Plug>NetrwRefresh", { silent = true })
