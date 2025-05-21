@@ -66,7 +66,9 @@ return {
 					"🚀 Have a nice coding session!",
 				},
 				shortcut_type = "letter",
-
+				mru = {
+					cwd_only = true,
+				},
 				shortcut = {
 					{
 						desc = "󰢻 Config", -- Cog/gear icon for configuration
