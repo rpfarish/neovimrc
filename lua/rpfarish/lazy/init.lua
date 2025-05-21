@@ -115,8 +115,9 @@ return {
 			vim.keymap.set("n", "<leader>pf", builtin.find_files, { desc = "Search [P]roject [F]iles" })
 			vim.keymap.set("n", "<C-p>", builtin.git_files, { desc = "Search Git [P]roject Files" })
 			vim.keymap.set("n", "<leader>ps", function()
-				builtin.grep_string({ search = vim.fn.input("Grep > ") })
-			end, { desc = "[P]roject [S]earch for text" })
+				-- builtin.grep_string({ search = vim.fn.input("Grep > ") })
+				print("Use <leader>sg instead")
+			end, { desc = "Search for project text Deprecated: Use <leader>sg instead" })
 			require("telescope").setup({
 				extensions = {
 					["ui-select"] = {
