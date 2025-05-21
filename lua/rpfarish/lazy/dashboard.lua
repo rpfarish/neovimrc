@@ -66,24 +66,28 @@ return {
 					"🚀 Have a nice coding session!",
 				},
 				shortcut_type = "letter",
+
 				shortcut = {
-					{ desc = "󰊳 Update", group = "@property", action = "Lazy update", key = "u" },
 					{
-						icon = " ",
-						icon_hl = "@variable",
-						desc = "Files",
+						desc = "󰢻 Config", -- Cog/gear icon for configuration
+						group = "Define",
+						action = "edit ~/.config/nvim/lua/rpfarish/lazy/init.lua",
+						key = "c",
+					},
+					{
+						desc = "󰈔 Files", -- Document/file icon
 						group = "Label",
 						action = "Telescope find_files",
 						key = "f",
 					},
 					{
-						desc = " Lazy",
+						desc = "󰒲 Lazy", -- Download/package icon
 						group = "Number",
 						action = "Lazy",
 						key = "l",
 					},
 					{
-						desc = " Mason",
+						desc = "󰒋 Mason", -- Box/package icon
 						group = "@property",
 						action = "Mason",
 						key = "m",
@@ -94,3 +98,10 @@ return {
 	end,
 	dependencies = { { "nvim-tree/nvim-web-devicons" } },
 }
+-- 󰌵 (language/code icon)
+-- 󰅩 (bracket/code icon)
+-- 󱐋 (tools/wrench icon)
+-- 󰍉 (diagnostic/check icon)
+-- 󰛥 (
+-- 󰒋
+-- 󰏔
