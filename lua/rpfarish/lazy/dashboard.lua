@@ -62,7 +62,7 @@ return {
 				},
 				footer = {
 					" ",
-					"🚀 Have a nice coding session!",
+					"🏞️ To go touch grass, please press :q (or ZZ 💪 like a real man).",
 				},
 				shortcut_type = "letter",
 				mru = {
