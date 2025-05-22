@@ -172,26 +172,19 @@ return {
 			},
 		},
 	},
-	{
+{
 		-- Main LSP Configuration
 		"neovim/nvim-lspconfig",
-		event = { "LspAttach", "BufReadPre" },
 		dependencies = {
 			-- Automatically install LSPs and related tools to stdpath for Neovim
 			-- Mason must be loaded before its dependents so we need to set it up here.
-			{ "mason-org/mason.nvim", cmd = { "Mason", "MasonInstall", "MasonUpdate" }, opts = {} },
-			{ "mason-org/mason-lspconfig.nvim", lazy = true },
-			{ "WhoIsSethDaniel/mason-tool-installer.nvim", lazy = true },
-			{ "mfussenegger/nvim-lint", event = { "BufWritePre" } },
+			{ "mason-org/mason.nvim", opts = {} },
+			"mason-org/mason-lspconfig.nvim",
+			"WhoIsSethDaniel/mason-tool-installer.nvim",
+			"mfussenegger/nvim-lint",
 
 			-- Useful status updates for LSP.
-			{
-				"j-hui/fidget.nvim",
-				event = "LspAttach",
-				config = function()
-					require("fidget").setup()
-				end,
-			},
+			{ "j-hui/fidget.nvim", opts = {} },
 
 			"saghen/blink.cmp",
 		},
@@ -326,7 +319,7 @@ return {
 					end,
 				},
 			})
-			local lsp_cache = require("rpfarish.lazy.lsp-cache")
+
 			local capabilities = require("blink.cmp").get_lsp_capabilities()
 
 			local servers = {
@@ -381,7 +374,7 @@ return {
 			}
 
 			-- Auto-trigger linting
-			vim.api.nvim_create_autocmd({ "BufWritePost" }, { -- Removed BufEnter to reduce triggers
+			vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, {
 				callback = function()
 					require("lint").try_lint()
 				end,
@@ -393,53 +386,9 @@ return {
 					function(server_name)
 						local server = servers[server_name] or {}
 						server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-						local original_setup = require("lspconfig")[server_name].setup
-						local cached_setup = lsp_cache.create_enhanced_setup(original_setup)
-						cached_setup(server_name, server)
+						require("lspconfig")[server_name].setup(server)
 					end,
 				},
-			})
-
-			vim.api.nvim_create_autocmd("VimEnter", {
-				callback = function()
-					-- Schedule workspace preloading after Neovim is fully started
-					vim.defer_fn(function()
-						local cwd = vim.fn.getcwd()
-						-- Identify common project markers to determine which LSPs to preload
-						local has_package_json = vim.fn.filereadable(cwd .. "/package.json") == 1
-						local has_pyproject = vim.fn.filereadable(cwd .. "/pyproject.toml") == 1
-							or vim.fn.filereadable(cwd .. "/requirements.txt") == 1
-						local has_cargo = vim.fn.filereadable(cwd .. "/Cargo.toml") == 1
-
-						local to_preload = {}
-						if has_package_json then
-							table.insert(to_preload, "ts_ls")
-						end
-						if has_pyproject then
-							table.insert(to_preload, "pyright")
-							table.insert(to_preload, "ruff")
-						end
-						if has_cargo then
-							table.insert(to_preload, "rust_analyzer")
-						end
-
-						-- Preload the detected LSPs in background
-						for _, server_name in ipairs(to_preload) do
-							if servers[server_name] then
-								-- Create a dummy buffer to trigger LSP loading
-								local buf = vim.api.nvim_create_buf(false, true)
-								vim.api.nvim_buf_set_name(buf, cwd .. "/.__lsp_preload__." .. server_name)
-
-								-- Schedule buffer cleanup
-								vim.defer_fn(function()
-									if vim.api.nvim_buf_is_valid(buf) then
-										vim.api.nvim_buf_delete(buf, { force = true })
-									end
-								end, 5000)
-							end
-						end
-					end, 1000) -- Wait 1 second after startup
-				end,
 			})
 		end,
 	},
