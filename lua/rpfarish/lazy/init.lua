@@ -172,7 +172,7 @@ return {
 			},
 		},
 	},
-{
+	{
 		-- Main LSP Configuration
 		"neovim/nvim-lspconfig",
 		dependencies = {
@@ -186,7 +186,41 @@ return {
 			-- Useful status updates for LSP.
 			{ "j-hui/fidget.nvim", opts = {} },
 
-			"saghen/blink.cmp",
+			{
+				"saghen/blink.cmp",
+				dependencies = "rafamadriz/friendly-snippets",
+				version = "*",
+				opts = {
+					keymap = { preset = "default" },
+					appearance = {
+						use_nvim_cmp_as_default = true,
+						nerd_font_variant = "mono",
+					},
+					sources = {
+						default = { "lsp", "path", "snippets", "buffer" },
+					},
+					completion = {
+						accept = {
+							auto_brackets = {
+								enabled = true,
+							},
+						},
+						menu = {
+							draw = {
+								treesitter = { "lsp" },
+							},
+						},
+						documentation = {
+							auto_show = true,
+							auto_show_delay_ms = 200,
+						},
+					},
+					signature = {
+						enabled = true,
+					},
+				},
+				opts_extend = { "sources.default" },
+			},
 		},
 		config = function()
 			vim.api.nvim_create_autocmd("LspAttach", {
@@ -341,7 +375,26 @@ return {
 						},
 					},
 				},
-				-- rust_analyzer = {},
+				rust_analyzer = {
+					settings = {
+						["rust-analyzer"] = {
+							cargo = {
+								allFeatures = true,
+							},
+							checkOnSave = {
+								command = "clippy",
+							},
+							procMacro = {
+								enable = true,
+							},
+							inlayHints = {
+								chainingHints = { enable = true },
+								parameterHints = { enable = true },
+								typeHints = { enable = true },
+							},
+						},
+					},
+				},
 				-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
 				-- Some languages (like typescript) have entire language plugins that can be useful:
 				--    https://github.com/pmizio/typescript-tools.nvim
@@ -364,6 +417,8 @@ return {
 				"marksman",
 				"stylua", -- Used to format Lua code
 				"ruff",
+				"rust-analyzer", -- Rust language server
+				-- "rustfmt", -- Rust formatter
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 			-- Add this to your plugin setup
@@ -428,7 +483,7 @@ return {
 				lua = { "stylua" },
 				-- Conform can also run multiple formatters sequentially
 				python = { "autopep8", "isort", "black" },
-				--
+				rust = { "rustfmt" },
 				-- You can use 'stop_after_first' to run the first available formatter from the list
 				javascript = { "prettierd", "prettier", stop_after_first = true },
 			},
