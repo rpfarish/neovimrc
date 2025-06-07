@@ -6,7 +6,7 @@ vim.schedule(function()
 end)
 
 -- [[ Basic Autocommands ]]
-vim.api.nvim_create_autocmd("TextYankPost", {
+vim.api.nvim_create_autocmd("TextYankPost", { --xclip
 	desc = "Highlight when yanking (copying) text",
 	group = vim.api.nvim_create_augroup("rpfarish-highlight-yank", { clear = true }),
 	callback = function()

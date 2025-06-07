@@ -36,3 +36,12 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 	desc = "Handle netrw keys to avoid conflicts with harpoon",
 })
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+	callback = function()
+		vim.cmd([[
+						highlight Normal guibg=NONE blend=90
+						highlight NonText guibg=NONE blend=90
+						]])
+	end,
+})
