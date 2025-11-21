@@ -1,5 +1,66 @@
 return {
 	{
+		"epwalsh/obsidian.nvim",
+		version = "*", -- recommended, use latest release instead of latest commit
+		lazy = true,
+		ft = "markdown",
+		-- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
+		-- event = {
+		--   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
+		--   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/*.md"
+		--   -- refer to `:h file-pattern` for more examples
+		--   "BufReadPre path/to/my-vault/*.md",
+		--   "BufNewFile path/to/my-vault/*.md",
+		-- },
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+		},
+		opts = {
+			workspaces = {
+				{
+					name = "personal",
+					path = "~/Documents/obsidian/notes/",
+				},
+				-- {
+				-- 	name = "work",
+				-- 	path = "~/vaults/work",
+				-- },
+			},
+		},
+	},
+	{
+		"ellisonleao/glow.nvim",
+		config = true,
+		cmd = "Glow",
+		keys = {
+			{ "<leader>mp", ":Glow<CR>", desc = "Markdown Preview with Glow" },
+		},
+	},
+	{
+		"iamcco/markdown-preview.nvim",
+		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+		build = "cd app && npm install",
+		init = function()
+			vim.g.mkdp_filetypes = { "markdown" }
+		end,
+		ft = { "markdown" },
+		keys = {
+			{ "<leader>mP", ":MarkdownPreview<CR>", desc = "Markdown Preview" },
+			{ "<leader>ms", ":MarkdownPreviewStop<CR>", desc = "Markdown Stop" },
+			{ "<leader>mT", ":MarkdownPreviewToggle<CR>", desc = "Markdown Toggle" },
+		},
+	},
+	{
+		enabled = False,
+		"MeanderingProgrammer/render-markdown.nvim",
+		dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.nvim" }, -- if you use the mini.nvim suite
+		-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
+		-- dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" }, -- if you prefer nvim-web-devicons
+		---@module 'render-markdown'
+		---@type render.md.UserConfig
+		opts = {},
+	},
+	{
 		"ThePrimeagen/vim-be-good",
 		cmd = { "VimBeGood" },
 	},
@@ -9,6 +70,10 @@ return {
 		event = "VeryLazy",
 		opts = {
 			on_attach = function(bufnr)
+				if vim.fn.isdirectory(".git") ~= 1 then
+					return false
+				end
+
 				local gitsigns = require("gitsigns")
 
 				local function map(mode, l, r, opts)
@@ -363,6 +428,7 @@ return {
 				markdownlint = {},
 				isort = {},
 				black = {},
+				clangd = {},
 				autopep8 = {},
 				prettierd = {},
 				prettier = {},
@@ -415,8 +481,10 @@ return {
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
 				"marksman",
+				"cssls",
 				"stylua", -- Used to format Lua code
 				"ruff",
+				"clangd",
 				"rust-analyzer", -- Rust language server
 				-- "rustfmt", -- Rust formatter
 			})
@@ -483,9 +551,15 @@ return {
 				lua = { "stylua" },
 				-- Conform can also run multiple formatters sequentially
 				python = { "autopep8", "isort", "black" },
+				c = { "clangd" },
 				rust = { "rustfmt" },
 				-- You can use 'stop_after_first' to run the first available formatter from the list
 				javascript = { "prettierd", "prettier", stop_after_first = true },
+				typescript = { "prettierd", "prettier", stop_after_first = true },
+				typescriptreact = { "prettierd", "prettier", stop_after_first = true },
+				javascriptreact = { "prettierd", "prettier", stop_after_first = true },
+				css = { "prettierd", "prettier", stop_after_first = true },
+				xml = { "xmlformatter" },
 			},
 		},
 	},
