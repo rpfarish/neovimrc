@@ -50,8 +50,5 @@ return {
 		end
 
 		vim.keymap.set("n", "<leader>U", toggle_undotree_layout, { desc = "Toggle [U]ndotree Layout" })
-		vim.keymap.set("n", "<Esc><Esc>", function()
-			vim.cmd("UndotreeHide")
-		end, { desc = "Hide Undotree" })
 	end,
 }

@@ -1,66 +1,5 @@
 return {
 	{
-		"epwalsh/obsidian.nvim",
-		version = "*", -- recommended, use latest release instead of latest commit
-		lazy = true,
-		ft = "markdown",
-		-- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
-		-- event = {
-		--   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
-		--   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/*.md"
-		--   -- refer to `:h file-pattern` for more examples
-		--   "BufReadPre path/to/my-vault/*.md",
-		--   "BufNewFile path/to/my-vault/*.md",
-		-- },
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-		},
-		opts = {
-			workspaces = {
-				{
-					name = "personal",
-					path = "~/Documents/obsidian/notes/",
-				},
-				-- {
-				-- 	name = "work",
-				-- 	path = "~/vaults/work",
-				-- },
-			},
-		},
-	},
-	{
-		"ellisonleao/glow.nvim",
-		config = true,
-		cmd = "Glow",
-		keys = {
-			{ "<leader>mp", ":Glow<CR>", desc = "Markdown Preview with Glow" },
-		},
-	},
-	{
-		"iamcco/markdown-preview.nvim",
-		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-		build = "cd app && npm install",
-		init = function()
-			vim.g.mkdp_filetypes = { "markdown" }
-		end,
-		ft = { "markdown" },
-		keys = {
-			{ "<leader>mP", ":MarkdownPreview<CR>", desc = "Markdown Preview" },
-			{ "<leader>ms", ":MarkdownPreviewStop<CR>", desc = "Markdown Stop" },
-			{ "<leader>mT", ":MarkdownPreviewToggle<CR>", desc = "Markdown Toggle" },
-		},
-	},
-	{
-		enabled = False,
-		"MeanderingProgrammer/render-markdown.nvim",
-		dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.nvim" }, -- if you use the mini.nvim suite
-		-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
-		-- dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" }, -- if you prefer nvim-web-devicons
-		---@module 'render-markdown'
-		---@type render.md.UserConfig
-		opts = {},
-	},
-	{
 		"ThePrimeagen/vim-be-good",
 		cmd = { "VimBeGood" },
 	},
@@ -148,7 +87,6 @@ return {
 		keys = {
 			{ "<leader>pf", desc = "Search [P]roject [F]iles" },
 			{ "<C-p>", desc = "Search Git [P]roject Files" },
-			{ "<leader>ps", desc = "[P]roject [S]earch for text" },
 			{ "<leader>sh", desc = "[S]earch [H]elp" },
 			{ "<leader>sk", desc = "[S]earch [K]eymaps" },
 			{ "<leader>sf", desc = "[S]earch [F]iles" },
@@ -179,11 +117,15 @@ return {
 			local builtin = require("telescope.builtin")
 			vim.keymap.set("n", "<leader>pf", builtin.find_files, { desc = "Search [P]roject [F]iles" })
 			vim.keymap.set("n", "<C-p>", builtin.git_files, { desc = "Search Git [P]roject Files" })
-			vim.keymap.set("n", "<leader>ps", function()
-				-- builtin.grep_string({ search = vim.fn.input("Grep > ") })
-				print("Use <leader>sg instead")
-			end, { desc = "Search for project text Deprecated: Use <leader>sg instead" })
 			require("telescope").setup({
+				defaults = {
+					layout_strategy = "horizontal",
+					layout_config = {
+						width = 0.99,
+						height = 0.99,
+						preview_width = 0.5,
+					},
+				},
 				extensions = {
 					["ui-select"] = {
 						require("telescope.themes").get_dropdown(),
@@ -206,7 +148,7 @@ return {
 			vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
 
 			vim.keymap.set("n", "<leader>/", function()
-				builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
+				builtin.current_buffer_fuzzy_find(require("telescope.themes").get_ivy({
 					winblend = 10,
 					previewer = false,
 				}))
@@ -229,7 +171,7 @@ return {
 	{
 		-- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
 		-- used for completion, annotations and signatures of Neovim apis
-		"rpfarish/lazydev.nvim",
+		"folke/lazydev.nvim",
 		ft = "lua",
 		opts = {
 			library = {
@@ -432,15 +374,52 @@ return {
 				autopep8 = {},
 				prettierd = {},
 				prettier = {},
-				pyright = {},
+				ty = {},
 				ruff = { -- Add ruff server configuration
 					cmd = { "ruff", "server" },
 					settings = {
 						ruff = {
+							lint = {
+								select = {
+									"E", -- pycodestyle errors
+									"W", -- pycodestyle warnings
+									"F", -- pyflakes
+									"I", -- isort
+									"N", -- pep8-naming
+									"UP", -- pyupgrade
+									"ANN", -- flake8-annotations
+									"B", -- flake8-bugbear
+									"A", -- flake8-builtins
+									"COM", -- flake8-commas
+									"C4", -- flake8-comprehensions
+									"DTZ", -- flake8-datetimez
+									"T10", -- flake8-debugger
+									"EM", -- flake8-errmsg
+									"ISC", -- flake8-implicit-str-concat
+									"ICN", -- flake8-import-conventions
+									"G", -- flake8-logging-format
+									"PIE", -- flake8-pie
+									"T20", -- flake8-print
+									"PT", -- flake8-pytest-style
+									"Q", -- flake8-quotes
+									"RSE", -- flake8-raise
+									"RET", -- flake8-return
+									"SLF", -- flake8-self
+									"SIM", -- flake8-simplify
+									"TID", -- flake8-tidy-imports
+									"ARG", -- flake8-unused-arguments
+									"PTH", -- flake8-use-pathlib
+									"PL", -- pylint
+									"TRY", -- tryceratops
+									"RUF", -- ruff-specific rules
+									"NPY201", -- numpy 2.0 migration rules
+								},
+							},
 							-- Optional: Add custom Ruff settings here
 						},
 					},
 				},
+				pyright = {},
 				rust_analyzer = {
 					settings = {
 						["rust-analyzer"] = {
@@ -560,6 +539,8 @@ return {
 				javascriptreact = { "prettierd", "prettier", stop_after_first = true },
 				css = { "prettierd", "prettier", stop_after_first = true },
 				xml = { "xmlformatter" },
+				json = { "prettierd", "prettier", stop_after_first = true },
+				toml = { "prettierd", "prettier", stop_after_first = true },
 			},
 		},
 	},
@@ -620,8 +601,8 @@ return {
 			require("tokyonight").setup({
 				styles = {
 					comments = { italic = false },
-					sidebars = "transparent",
-					floats = "transparent",
+					-- sidebars = "transparent",
+					-- floats = "transparent",
 				},
 			})
 
@@ -694,4 +675,5 @@ return {
 	require("rpfarish.lazy.tjoil"),
 	require("rpfarish.lazy.trouble"),
 	require("rpfarish.lazy.autopairs"),
+	require("rpfarish.lazy.markdown"),
 }

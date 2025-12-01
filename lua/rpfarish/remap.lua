@@ -37,11 +37,44 @@ vim.api.nvim_create_autocmd("FileType", {
 	desc = "Handle netrw keys to avoid conflicts with harpoon",
 })
 
+-- Track transparency state
+local transparency_enabled = false
+
+-- Function to toggle transparency
+local function toggle_transparency()
+	if transparency_enabled then
+		vim.cmd([[
+            highlight Normal guibg=#1a1b26
+            highlight NonText guibg=#1a1b26
+            highlight NormalFloat guibg=#1a1b26
+            highlight SignColumn guibg=#1a1b26
+            highlight EndOfBuffer guibg=#1a1b26
+        ]])
+		transparency_enabled = false
+		print("Transparency disabled")
+	else
+		vim.cmd([[
+            highlight Normal guibg=NONE blend=90
+            highlight NonText guibg=NONE blend=90
+            highlight NormalFloat guibg=NONE
+            highlight SignColumn guibg=NONE
+            highlight EndOfBuffer guibg=NONE
+        ]])
+		transparency_enabled = true
+		print("Transparency enabled")
+	end
+end
+-- Create the autocmd to apply transparency on colorscheme changes
 vim.api.nvim_create_autocmd("ColorScheme", {
 	callback = function()
-		vim.cmd([[
-						highlight Normal guibg=NONE blend=90
-						highlight NonText guibg=NONE blend=90
-						]])
+		if transparency_enabled then
+			vim.cmd([[
+                highlight Normal guibg=NONE blend=90
+                highlight NonText guibg=NONE blend=90
+            ]])
+		end
 	end,
 })
+
+-- Set up the keymap to toggle transparency
+vim.keymap.set("n", "<leader>tt", toggle_transparency, { desc = "[T]oggle [T]ransparency" })

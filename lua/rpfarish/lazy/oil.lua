@@ -1,4 +1,5 @@
 return {
+	-- THIS FILE IS NOT CURRENLY USED
 	"stevearc/oil.nvim",
 	---@module 'oil'
 	---@type oil.SetupOpts

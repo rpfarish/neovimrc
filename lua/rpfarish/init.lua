@@ -13,7 +13,18 @@ vim.api.nvim_create_autocmd("TextYankPost", { --xclip
 		vim.hl.on_yank()
 	end,
 })
-
+-- Automatically rename tmux window to current file
+vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
+	callback = function()
+		if vim.env.TMUX then
+			local filename = vim.fn.expand("%:t")
+			if filename == "" then
+				filename = "[No Name]"
+			end
+			vim.fn.system("tmux rename-window '" .. filename .. "'")
+		end
+	end,
+})
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
