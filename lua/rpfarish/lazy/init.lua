@@ -635,7 +635,9 @@ return {
 
 			---@diagnostic disable-next-line: duplicate-set-field
 			statusline.section_location = function()
-				return "%2l:%-2v"
+				local recording = vim.fn.reg_recording()
+				local rec_status = recording ~= "" and " REC @" .. recording or ""
+				return "%2l:%-2v" .. rec_status
 			end
 		end,
 	},
@@ -666,14 +668,16 @@ return {
 			indent = { enable = true, disable = { "ruby" } },
 		},
 	},
+
 	require("rpfarish.lazy.todo-comments"),
 	require("rpfarish.lazy.harpoon"),
 	require("rpfarish.lazy.undotree"),
 	require("rpfarish.lazy.indent-blankline"),
 	require("rpfarish.lazy.dashboard"),
-	-- require("rpfarish.lazy.oil"),
 	require("rpfarish.lazy.tjoil"),
 	require("rpfarish.lazy.trouble"),
 	require("rpfarish.lazy.autopairs"),
 	require("rpfarish.lazy.markdown"),
+
+	-- require("rpfarish.lazy.oil"),
 }
