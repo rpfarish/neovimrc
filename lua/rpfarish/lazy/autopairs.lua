@@ -11,6 +11,47 @@ return {
 			enable_moveright = true,
 		})
 
+		-- Simpler fallback function that doesn't use treesitter
+		local function find_unmatched_close_paren_simple()
+			local bufnr = vim.api.nvim_get_current_buf()
+			local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+			row = row - 1 -- Convert to 0-indexed
+
+			-- Get lines from current position to end of file
+			local num_lines = vim.api.nvim_buf_line_count(bufnr)
+			local lines = vim.api.nvim_buf_get_lines(bufnr, row, num_lines, false)
+			if #lines == 0 then
+				return false
+			end
+
+			-- Modify first line to start from cursor position
+			lines[1] = lines[1]:sub(col + 1)
+
+			local stack = 0
+			for l = 1, #lines do
+				local text = lines[l]
+				for i = 1, #text do
+					local c = text:sub(i, i)
+					if c == "(" then
+						stack = stack + 1
+					elseif c == ")" then
+						if stack == 0 then
+							local result_row = row + l
+							local result_col = i
+							if l == 1 then
+								result_col = col + i
+							end
+							return { result_row, result_col - 1 }
+						else
+							stack = stack - 1
+						end
+					end
+				end
+			end
+
+			return false
+		end
+
 		-- Function to find an unmatched closing parenthesis using treesitter
 		local function find_unmatched_close_paren_with_ts()
 			-- Get current cursor position
@@ -48,9 +89,14 @@ return {
 			end
 
 			-- Find the closest ancestor that might contain our brackets
+			-- Find the closest ancestor that might contain our brackets
 			local containing_node = node_at_cursor
-			while containing_node and containing_node:parent() do
+			while containing_node do
 				local parent = containing_node:parent()
+				if not parent then
+					break
+				end
+
 				local start_row, start_col, end_row, end_col = parent:range()
 
 				-- Check if this parent extends beyond our cursor position
@@ -104,47 +150,6 @@ return {
 						if stack == 0 then
 							-- Found unmatched closing bracket on another line
 							return { row + l, i - 1 }
-						else
-							stack = stack - 1
-						end
-					end
-				end
-			end
-
-			return false
-		end
-
-		-- Simpler fallback function that doesn't use treesitter
-		local function find_unmatched_close_paren_simple()
-			local bufnr = vim.api.nvim_get_current_buf()
-			local row, col = unpack(vim.api.nvim_win_get_cursor(0))
-			row = row - 1 -- Convert to 0-indexed
-
-			-- Get lines from current position to end of file
-			local num_lines = vim.api.nvim_buf_line_count(bufnr)
-			local lines = vim.api.nvim_buf_get_lines(bufnr, row, num_lines, false)
-			if #lines == 0 then
-				return false
-			end
-
-			-- Modify first line to start from cursor position
-			lines[1] = lines[1]:sub(col + 1)
-
-			local stack = 0
-			for l = 1, #lines do
-				local text = lines[l]
-				for i = 1, #text do
-					local c = text:sub(i, i)
-					if c == "(" then
-						stack = stack + 1
-					elseif c == ")" then
-						if stack == 0 then
-							local result_row = row + l
-							local result_col = i
-							if l == 1 then
-								result_col = col + i
-							end
-							return { result_row, result_col - 1 }
 						else
 							stack = stack - 1
 						end

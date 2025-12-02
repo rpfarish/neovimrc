@@ -374,7 +374,7 @@ return {
 				autopep8 = {},
 				prettierd = {},
 				prettier = {},
-				ty = {},
+				-- ty = {},
 				ruff = { -- Add ruff server configuration
 					cmd = { "ruff", "server" },
 					settings = {
@@ -629,6 +629,22 @@ return {
 			-- - sd'   - [S]urround [D]elete [']quotes
 			-- - sr)'  - [S]urround [R]eplace [)] [']
 			require("mini.surround").setup()
+
+			require("mini.move").setup({
+				mappings = {
+					-- Move visual selection in Visual mode
+					left = "<C-A-h>",
+					right = "<C-A-l>",
+					down = "<C-A-j>",
+					up = "<C-A-k>",
+
+					-- Move current line in Normal mode
+					line_left = "<C-A-h>",
+					line_right = "<C-A-l>",
+					line_down = "<C-A-j>",
+					line_up = "<C-A-k>",
+				},
+			})
 
 			local statusline = require("mini.statusline")
 			statusline.setup({ use_icons = vim.g.have_nerd_font })
