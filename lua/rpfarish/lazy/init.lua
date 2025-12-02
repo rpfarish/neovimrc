@@ -694,6 +694,7 @@ return {
 	require("rpfarish.lazy.trouble"),
 	require("rpfarish.lazy.autopairs"),
 	require("rpfarish.lazy.markdown"),
+	require("rpfarish.lazy.ufo"),
 
 	-- require("rpfarish.lazy.oil"),
 }

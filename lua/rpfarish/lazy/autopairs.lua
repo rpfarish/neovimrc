@@ -114,8 +114,10 @@ return {
 			-- Look for closing parenthesis in the node's text
 			local start_row, start_col, end_row, end_col = containing_node:range()
 
+			local num_lines = vim.api.nvim_buf_line_count(bufnr)
+
 			-- Get text from cursor to the end of the containing node
-			local lines = vim.api.nvim_buf_get_lines(bufnr, row, end_row + 1, false)
+			local lines = vim.api.nvim_buf_get_lines(bufnr, row, num_lines, false)
 			if #lines == 0 then
 				return false
 			end
