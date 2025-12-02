@@ -1,6 +1,8 @@
 require("rpfarish.remap")
 require("rpfarish.set")
 
+require("rpfarish.custom.floterminal")
+
 vim.schedule(function()
 	vim.o.clipboard = "unnamedplus"
 end)

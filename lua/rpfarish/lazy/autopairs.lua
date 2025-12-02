@@ -89,7 +89,6 @@ return {
 			end
 
 			-- Find the closest ancestor that might contain our brackets
-			-- Find the closest ancestor that might contain our brackets
 			local containing_node = node_at_cursor
 			while containing_node do
 				local parent = containing_node:parent()
