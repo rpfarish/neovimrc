@@ -1,7 +1,9 @@
 require("rpfarish.remap")
 require("rpfarish.set")
 
-require("rpfarish.custom.floterminal")
+vim.keymap.set({ "n", "t" }, "<leader>af", function()
+	require("rpfarish.custom.floterminal").toggle()
+end, { desc = "Toggle Floating Terminal Panel" })
 
 vim.schedule(function()
 	vim.o.clipboard = "unnamedplus"
