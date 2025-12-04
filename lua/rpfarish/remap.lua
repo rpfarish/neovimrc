@@ -26,15 +26,16 @@ vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "oil",
 	callback = function()
-		-- Create a buffer-local mapping for netrw refresh that uses a different key
-		vim.api.nvim_buf_set_keymap(0, "n", "<C-r>", "<Plug>NetrwRefresh", { silent = true })
+		-- Oil uses actions.refresh for refreshing
+		-- Map <C-r> to oil's refresh action
+		vim.keymap.set("n", "<C-r>", function()
+			require("oil.actions").refresh.callback()
+		end, { buffer = true, silent = true, desc = "Refresh oil" })
 
-		-- Safely try to delete the <C-l> mapping, ignoring errors if it doesn't exist
-		pcall(vim.api.nvim_buf_del_keymap, 0, "n", "<C-l>")
-
-		-- Make our global C-l mapping work in netrw by explicitly defining it for this buffer
+		-- Safely try to delete the <C-l> mapping if it exists
+		pcall(vim.keymap.del, "n", "<C-l>", { buffer = true })
 	end,
-	desc = "Handle netrw keys to avoid conflicts with harpoon",
+	desc = "Handle oil.nvim keys to avoid conflicts with harpoon",
 })
 
 -- Track transparency state

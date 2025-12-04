@@ -100,6 +100,7 @@ return {
 			{ "<leader>/", desc = "[/] Fuzzily search in current buffer" },
 			{ "<leader>s/", desc = "[S]earch [/] in Open Files" },
 			{ "<leader>sn", desc = "[S]earch [N]eovim files" },
+			{ "<leader>l", "<cmd>Telescope colorscheme<cr>", desc = "Colorscheme picker" },
 		},
 		dependencies = {
 			"nvim-lua/plenary.nvim",
@@ -117,13 +118,82 @@ return {
 			local builtin = require("telescope.builtin")
 			vim.keymap.set("n", "<leader>pf", builtin.find_files, { desc = "Search [P]roject [F]iles" })
 			vim.keymap.set("n", "<C-p>", builtin.git_files, { desc = "Search Git [P]roject Files" })
+
+			-- Add this in your telescope config section, after the other keymaps
+			vim.keymap.set("n", "<leader>gi", function()
+				local word = vim.fn.expand("<cword>")
+				local filetype = vim.bo.filetype
+
+				-- definition patterns by language
+				local patterns = {
+					python = "^\\s*(def|class) " .. word,
+					javascript = "^\\s*(function|const|let|var|class) " .. word,
+					typescript = "^\\s*(function|const|let|var|class|interface|type) " .. word,
+					lua = "^\\s*(function|local function) .*" .. word,
+					rust = "^\\s*(fn|struct|enum|trait|impl) " .. word,
+					c = "^\\s*\\w+\\s+" .. word .. "\\s*\\(",
+					cpp = "^\\s*\\w+\\s+" .. word .. "\\s*\\(",
+				}
+
+				local pattern = patterns[filetype] or word
+
+				builtin.live_grep({
+					default_text = pattern,
+					prompt_title = "find definition: " .. word,
+					attach_mappings = function(prompt_bufnr, map)
+						local actions = require("telescope.actions")
+						local action_state = require("telescope.actions.state")
+
+						-- Override the default select action
+						actions.select_default:replace(function()
+							local selection = action_state.get_selected_entry()
+
+							if not selection then
+								actions.close(prompt_bufnr)
+								return
+							end
+
+							local target_file = selection.filename
+
+							-- Close telescope first
+							actions.close(prompt_bufnr)
+
+							-- Schedule everything after Telescope is fully closed
+							vim.schedule(function()
+								-- Open the file in a buffer without switching to it
+								vim.fn.bufadd(target_file)
+								vim.fn.bufload(target_file)
+
+								vim.notify(
+									"Loaded buffer: " .. vim.fn.fnamemodify(target_file, ":t"),
+									vim.log.levels.INFO
+								)
+
+								-- Wait for LSP to process the buffer, then trigger completion
+								vim.defer_fn(function()
+									-- Make sure we're in insert mode for completion
+									if vim.fn.mode() ~= "i" then
+										vim.cmd("startinsert!")
+									end
+									require("blink.cmp").show()
+								end, 300) -- Increased delay slightly
+							end)
+						end)
+
+						return true
+					end,
+				})
+			end, { desc = "[g]oto definition via [f]ind" })
+
 			require("telescope").setup({
 				defaults = {
 					layout_strategy = "horizontal",
 					layout_config = {
-						width = 0.99,
-						height = 0.99,
-						preview_width = 0.5,
+						horizontal = {
+							width = 0.99,
+							height = 0.99,
+							preview_width = 0.5,
+						},
 					},
 				},
 				extensions = {
@@ -179,6 +249,7 @@ return {
 			},
 		},
 	},
+
 	{
 		-- Main LSP Configuration
 		"neovim/nvim-lspconfig",
@@ -198,7 +269,13 @@ return {
 				dependencies = "rafamadriz/friendly-snippets",
 				version = "*",
 				opts = {
-					keymap = { preset = "default" },
+					keymap = {
+						preset = "default", -- Keep <C-y> for accepting
+						-- Tab does "soft" accept - only accepts if completion menu is visible
+						["<Tab>"] = { "select_and_accept", "snippet_forward", "fallback" },
+						["<CR>"] = { "select_and_accept", "snippet_forward", "fallback" },
+						["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },
+					},
 					appearance = {
 						use_nvim_cmp_as_default = true,
 						nerd_font_variant = "mono",
@@ -233,6 +310,7 @@ return {
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("rpfarish-lsp-attach", { clear = true }),
 				callback = function(event)
+					-- print("attaching lsp!!!")
 					local map = function(keys, func, desc, mode)
 						mode = mode or "n"
 						vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
@@ -452,6 +530,9 @@ return {
 							completion = {
 								callSnippet = "Replace",
 							},
+							diagnostics = {
+								globals = { "vim" }, -- Recognize 'vim' global
+							},
 						},
 					},
 				},
@@ -459,13 +540,24 @@ return {
 
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
-				"marksman",
-				"cssls",
-				"stylua", -- Used to format Lua code
-				"ruff",
+				"autopep8",
+				"black",
 				"clangd",
-				"rust-analyzer", -- Rust language server
-				-- "rustfmt", -- Rust formatter
+				"cssls",
+				"isort",
+				"lemminx",
+				-- "lua_ls",
+				"markdownlint",
+				"marksman",
+				"prettier",
+				"prettierd",
+				"pyright",
+				"ruff",
+				"rust_analyzer",
+				"stylelint",
+				"stylua",
+				"ts_ls",
+				"xmlformatter",
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 			-- Add this to your plugin setup
@@ -482,15 +574,22 @@ return {
 				end,
 			})
 			require("mason-lspconfig").setup({
-				ensure_installed = {}, -- explicitly set to an empty table (rpfarish populates installs via mason-tool-installer)
+				ensure_installed = {},
 				automatic_installation = false,
 				handlers = {
 					function(server_name)
+						-- Skip lua_ls here, we'll set it up manually
+						if server_name == "lua_ls" then
+							return
+						end
 						local server = servers[server_name] or {}
 						server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
 						require("lspconfig")[server_name].setup(server)
 					end,
 				},
+			})
+			require("mason").setup({
+				PATH = "append", -- Prioritize system packages over Mason's
 			})
 		end,
 	},
@@ -549,6 +648,7 @@ return {
 		"saghen/blink.cmp",
 		event = "InsertEnter", -- Only load when actually entering insert mode
 		version = "1.*",
+
 		dependencies = {
 			{
 				"L3MON4D3/LuaSnip",
@@ -563,7 +663,7 @@ return {
 				dependencies = {},
 				opts = {},
 			},
-			"rpfarish/lazydev.nvim",
+			"folke/lazydev.nvim",
 		},
 		--- @module 'blink.cmp'
 		--- @type blink.cmp.Config
@@ -592,24 +692,25 @@ return {
 			signature = { enabled = true },
 		},
 	},
-	{
-		-- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-		"folke/tokyonight.nvim",
-		priority = 1000, -- Make sure to load this before all the other start plugins.
-		config = function()
-			---@diagnostic disable-next-line: missing-fields
-			require("tokyonight").setup({
-				styles = {
-					comments = { italic = false },
-					-- sidebars = "transparent",
-					-- floats = "transparent",
-				},
-			})
 
-			-- 'tokyonight-storm', 'tokyonight-moon', 'tokyonight-day'
-			vim.cmd.colorscheme("tokyonight-night")
-		end,
-	},
+	-- {
+	-- 	-- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
+	-- 	"folke/tokyonight.nvim",
+	-- 	priority = 1000, -- Make sure to load this before all the other start plugins.
+	-- 	config = function()
+	-- 		---@diagnostic disable-next-line: missing-fields
+	-- 		require("tokyonight").setup({
+	-- 			styles = {
+	-- 				comments = { italic = false },
+	-- 				-- sidebars = "transparent",
+	-- 				-- floats = "transparent",
+	-- 			},
+	-- 		})
+	--
+	-- 		-- 'tokyonight-storm', 'tokyonight-moon', 'tokyonight-day'
+	-- 		vim.cmd.colorscheme("tokyonight-night")
+	-- 	end,
+	-- },
 
 	{ -- Collection of various small independent plugins/modules
 		"echasnovski/mini.nvim",
@@ -657,6 +758,7 @@ return {
 			end
 		end,
 	},
+
 	{ -- Highlight, edit, and navigate code
 		"nvim-treesitter/nvim-treesitter",
 		event = { "BufReadPost", "BufNewFile" }, -- This plugin is important enough to keep its original events
@@ -665,7 +767,13 @@ return {
 		opts = {
 			ensure_installed = {
 				"bash",
+				"python",
+				"rust",
+				"css",
+				"cpp",
 				"c",
+				"javascript",
+				"typescript",
 				"diff",
 				"html",
 				"lua",
@@ -685,6 +793,28 @@ return {
 		},
 	},
 
+	{
+		"nvim-treesitter/nvim-treesitter-textobjects",
+		dependencies = "nvim-treesitter/nvim-treesitter",
+		config = function()
+			require("nvim-treesitter.configs").setup({
+				textobjects = {
+					select = {
+						enable = true,
+						lookahead = true,
+						keymaps = {
+							["af"] = "@function.outer",
+							["if"] = "@function.inner",
+							["ac"] = "@class.outer",
+							["ic"] = "@class.inner",
+						},
+					},
+				},
+			})
+		end,
+	},
+
+	-- require("rpfarish.lazy.blink"),
 	require("rpfarish.lazy.todo-comments"),
 	require("rpfarish.lazy.harpoon"),
 	require("rpfarish.lazy.undotree"),
@@ -695,6 +825,8 @@ return {
 	require("rpfarish.lazy.autopairs"),
 	require("rpfarish.lazy.markdown"),
 	require("rpfarish.lazy.ufo"),
+	-- require("rpfarish.lazy.base16-colorschemes"),
+	require("rpfarish.lazy.rosepine"),
 
 	-- require("rpfarish.lazy.oil"),
 }
