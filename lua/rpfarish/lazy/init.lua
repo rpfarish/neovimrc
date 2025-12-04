@@ -196,6 +196,17 @@ return {
 						},
 					},
 				},
+				pickers = {
+					colorscheme = {
+						enable_preview = true,
+						layout_strategy = "vertical",
+						layout_config = {
+							height = 0.35,
+							width = 0.50,
+							prompt_position = "top",
+						},
+					},
+				},
 				extensions = {
 					["ui-select"] = {
 						require("telescope.themes").get_dropdown(),
@@ -825,7 +836,7 @@ return {
 	require("rpfarish.lazy.autopairs"),
 	require("rpfarish.lazy.markdown"),
 	require("rpfarish.lazy.ufo"),
-	-- require("rpfarish.lazy.base16-colorschemes"),
+	require("rpfarish.lazy.base16-colorschemes"),
 	require("rpfarish.lazy.rosepine"),
 
 	-- require("rpfarish.lazy.oil"),
