@@ -33,5 +33,15 @@ return {
 			"<cmd>Trouble qflist toggle<cr>",
 			desc = "Quickfix List (Trouble)",
 		},
+		{
+			"<leader>td",
+			"<cmd>Trouble todo toggle<cr>",
+			desc = "Todo List (Trouble)",
+		},
+		{
+			"<leader>tb",
+			"<cmd>Trouble todo toggle filter.buf=0<cr>",
+			desc = "Todo List current buffer (Trouble)",
+		},
 	},
 }

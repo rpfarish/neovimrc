@@ -1,81 +1,92 @@
+local keymap = vim.keymap
+local set = keymap.set
+
+-- Leader keys
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
--- vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, { desc = "[P]roject [V]iew" })
-vim.keymap.set("n", "<leader>pv", "<CMD>Oil<CR>", { desc = "[P]roject [V]iew" })
 
-vim.keymap.set("i", "jj", "<esc>", { desc = "Escape to normal mode" })
-vim.keymap.set("x", "<leader>p", [["_dP]])
+-- File Navigation
+set("n", "<leader>pv", "<CMD>Oil<CR>", { desc = "[P]roject [V]iew" })
 
-vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
--- vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
-vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
--- NOTE: Window navigation
-vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
-vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
-vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
-vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
+-- Terminal
+set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 
-vim.keymap.set("x", "<leader>p", [["_dP]])
-vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
-vim.keymap.set("n", "J", "mzJ`z")
-vim.keymap.set("n", "<C-d>", "<C-d>zz")
-vim.keymap.set("n", "<C-u>", "<C-u>zz")
+-- Search & Highlighting
+set("n", "<Esc>", "<cmd>nohlsearch<CR>", { desc = "Clear search highlights" })
 
-vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Hover" })
+-- Clipboard & Deletion
+set("x", "<leader>p", [["_dP]], { desc = "Paste without yanking" })
+set({ "n", "v" }, "<leader>d", [["_d]], { desc = "Delete to black hole register" })
 
+-- Text Manipulation
+set("n", "J", "mzJ`z", { desc = "Join lines keeping cursor position" })
+
+-- Navigation
+set("n", "<C-d>", "<C-d>zz", { desc = "Scroll down and center" })
+set("n", "<C-u>", "<C-u>zz", { desc = "Scroll up and center" })
+
+-- Window Management
+set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
+set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
+set("n", "<C-S-j>", "<C-w>J", { desc = "Move window down" })
+set("n", "<C-S-k>", "<C-w>K", { desc = "Move window up" })
+
+-- LSP
+set("n", "K", vim.lsp.buf.hover, { desc = "LSP Hover" })
+
+-- Better indenting
+set("v", "<", "<gv", { desc = "Indent left and reselect" })
+set("v", ">", ">gv", { desc = "Indent right and reselect" })
+
+-- Oil.nvim Configuration
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "oil",
 	callback = function()
-		-- Oil uses actions.refresh for refreshing
-		-- Map <C-r> to oil's refresh action
-		vim.keymap.set("n", "<C-r>", function()
+		set("n", "<C-r>", function()
 			require("oil.actions").refresh.callback()
 		end, { buffer = true, silent = true, desc = "Refresh oil" })
-
-		-- Safely try to delete the <C-l> mapping if it exists
-		pcall(vim.keymap.del, "n", "<C-l>", { buffer = true })
+		pcall(keymap.del, "n", "<C-l>", { buffer = true })
 	end,
-	desc = "Handle oil.nvim keys to avoid conflicts with harpoon",
+	desc = "Configure oil.nvim keymaps",
 })
 
--- Track transparency state
+-- Transparency Toggle
 local transparency_enabled = false
 
--- Function to toggle transparency
 local function toggle_transparency()
 	if transparency_enabled then
 		vim.cmd([[
-            highlight Normal guibg=#1a1b26
-            highlight NonText guibg=#1a1b26
-            highlight NormalFloat guibg=#1a1b26
-            highlight SignColumn guibg=#1a1b26
-            highlight EndOfBuffer guibg=#1a1b26
-        ]])
+			highlight Normal guibg=#1a1b26
+			highlight NonText guibg=#1a1b26
+			highlight NormalFloat guibg=#1a1b26
+			highlight SignColumn guibg=#1a1b26
+			highlight EndOfBuffer guibg=#1a1b26
+		]])
 		transparency_enabled = false
 		print("Transparency disabled")
 	else
 		vim.cmd([[
-            highlight Normal guibg=NONE blend=90
-            highlight NonText guibg=NONE blend=90
-            highlight NormalFloat guibg=NONE
-            highlight SignColumn guibg=NONE
-            highlight EndOfBuffer guibg=NONE
-        ]])
+			highlight Normal guibg=NONE blend=90
+			highlight NonText guibg=NONE blend=90
+			highlight NormalFloat guibg=NONE
+			highlight SignColumn guibg=NONE
+			highlight EndOfBuffer guibg=NONE
+		]])
 		transparency_enabled = true
 		print("Transparency enabled")
 	end
 end
--- Create the autocmd to apply transparency on colorscheme changes
+
 vim.api.nvim_create_autocmd("ColorScheme", {
 	callback = function()
 		if transparency_enabled then
 			vim.cmd([[
-                highlight Normal guibg=NONE blend=90
-                highlight NonText guibg=NONE blend=90
-            ]])
+				highlight Normal guibg=NONE blend=90
+				highlight NonText guibg=NONE blend=90
+			]])
 		end
 	end,
+	desc = "Maintain transparency on colorscheme change",
 })
 
--- Set up the keymap to toggle transparency
-vim.keymap.set("n", "<leader>tt", toggle_transparency, { desc = "[T]oggle [T]ransparency" })
+set("n", "<leader>tt", toggle_transparency, { desc = "[T]oggle [T]ransparency" })

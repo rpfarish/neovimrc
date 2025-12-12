@@ -12,6 +12,8 @@ function M.run_current()
 	if not cmd then
 		return vim.notify("No run command defined for this filetype", vim.log.levels.WARN)
 	end
+
+	vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(":wa<CR>", true, false, true), "nx", false)
 	vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-c>", true, false, true), "n", false)
 	vim.api.nvim_feedkeys("i", "t", false)
 	term.run(cmd)

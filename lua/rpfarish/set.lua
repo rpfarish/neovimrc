@@ -1,39 +1,57 @@
-vim.g.have_nerd_font = true
-vim.o.number = true
-vim.o.relativenumber = true
-vim.o.mouse = "a"
-vim.o.showmode = false
+local opt = vim.opt
+local g = vim.g
 
-vim.opt.tabstop = 2
-vim.opt.softtabstop = 2
-vim.opt.shiftwidth = 2
-vim.opt.expandtab = true
+-- Global settings
+g.have_nerd_font = true
+g.python3_host_prog = "/usr/bin/python3"
 
-vim.opt.smartindent = true
-vim.opt.cmdheight = 0
-vim.opt.conceallevel = 0
+-- UI
+opt.number = true
+opt.relativenumber = true
+opt.showmode = false
+opt.signcolumn = "yes"
+opt.cursorline = true
+opt.colorcolumn = "80"
+opt.cmdheight = 0
+opt.conceallevel = 0
 
-vim.opt.wrap = false
-vim.opt.swapfile = false
-vim.opt.backup = false
-vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
-vim.g.python3_host_prog = "/usr/bin/python3"
-vim.opt.undofile = true
-vim.o.colorcolumn = "80"
-vim.loader.enable()
+-- Editing
+opt.mouse = "a"
+opt.breakindent = true
+opt.wrap = false
+opt.scrolloff = 8
+opt.confirm = true
+
+-- Indentation
+opt.tabstop = 2
+opt.softtabstop = 2
+opt.shiftwidth = 2
+opt.expandtab = true
+opt.smartindent = true
+
+-- Search
+opt.ignorecase = true
+opt.smartcase = true
+opt.inccommand = "split"
+
+-- Files & Undo
+opt.swapfile = false
+opt.backup = false
+opt.undofile = true
+opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
+
+-- Splits
+opt.splitright = true
+opt.splitbelow = true
+
+-- Timing
+opt.updatetime = 100
+opt.timeoutlen = 300
+
+-- Clipboard (scheduled to avoid startup delay)
 vim.schedule(function()
-	vim.o.clipboard = "unnamedplus"
+	opt.clipboard = "unnamedplus"
 end)
-vim.o.breakindent = true
-vim.o.undofile = true
-vim.o.ignorecase = true
-vim.o.smartcase = true
-vim.o.signcolumn = "yes"
-vim.o.updatetime = 250
-vim.o.timeoutlen = 300
-vim.o.splitright = true
-vim.o.splitbelow = true
-vim.o.inccommand = "split"
-vim.o.cursorline = true
-vim.o.scrolloff = 8
-vim.o.confirm = true
+
+-- Enable faster Lua module loading
+vim.loader.enable()
