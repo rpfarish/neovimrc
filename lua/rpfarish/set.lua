@@ -38,7 +38,7 @@ opt.inccommand = "split"
 opt.swapfile = false
 opt.backup = false
 opt.undofile = true
-opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
+opt.undodir = vim.fn.expand("~/.vim/undodir")
 
 -- Splits
 opt.splitright = true
