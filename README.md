@@ -33,6 +33,11 @@
 - A [Nerd Font](https://www.nerdfonts.com/) (optional but recommended)
 - `make` (for certain plugins)
 - Language servers (automatically installed via Mason)
+  
+Install dependencies on Arch linux:
+``` bash 
+sudo pacman -Sy --noconfirm --needed --disable-download-timeout gcc make git ripgrep fd unzip neovim python
+```
 
 ## 🚀 Installation
 
@@ -41,7 +46,7 @@
 mv ~/.config/nvim ~/.config/nvim.bak
 
 # Clone this repository
-git clone https://github.com/yourusername/neoslick.git ~/.config/nvim
+git clone https://github.com/rpfarish/neovimrc.git ~/.config/nvim
 
 # Start Neovim - plugins will be installed automatically
 nvim
