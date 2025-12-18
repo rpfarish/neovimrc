@@ -36,22 +36,22 @@ return {
 			{ "<leader>mp", ":Glow<CR>", desc = "Markdown Preview with Glow" },
 		},
 	},
-	-- {
-	-- "iamcco/markdown-preview.nvim",
-	-- cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-	-- build = "cd app && npm install",
-	-- init = function()
-	-- 	vim.g.mkdp_filetypes = { "markdown" }
-	-- end,
-	-- ft = { "markdown" },
-	-- keys = {
-	-- 	{ "<leader>mP", ":MarkdownPreview<CR>", desc = "Markdown Preview" },
-	-- 	{ "<leader>ms", ":MarkdownPreviewStop<CR>", desc = "Markdown Stop" },
-	-- 	{ "<leader>mT", ":MarkdownPreviewToggle<CR>", desc = "Markdown Toggle" },
-	-- },
-	-- },
 	{
-		enabled = false,
+		"iamcco/markdown-preview.nvim",
+		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+		build = "cd app && npm install",
+		init = function()
+			vim.g.mkdp_filetypes = { "markdown" }
+		end,
+		ft = { "markdown" },
+		keys = {
+			{ "<leader>mP", ":MarkdownPreview<CR>", desc = "Markdown Preview" },
+			{ "<leader>ms", ":MarkdownPreviewStop<CR>", desc = "Markdown Stop" },
+			{ "<leader>mT", ":MarkdownPreviewToggle<CR>", desc = "Markdown Toggle" },
+		},
+	},
+	{
+		enabled = true,
 		"MeanderingProgrammer/render-markdown.nvim",
 		dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.nvim" }, -- if you use the mini.nvim suite
 		-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins

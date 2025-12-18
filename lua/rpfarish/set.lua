@@ -40,6 +40,9 @@ opt.backup = false
 opt.undofile = true
 opt.undodir = vim.fn.expand("~/.vim/undodir")
 
+-- History
+opt.history = 10000
+
 -- Splits
 opt.splitright = true
 opt.splitbelow = true

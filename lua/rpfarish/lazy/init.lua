@@ -21,6 +21,7 @@ return {
 			{ "<leader>s/", desc = "[S]earch [/] in Open Files" },
 			{ "<leader>sn", desc = "[S]earch [N]eovim files" },
 			{ "<leader>l", "<cmd>Telescope colorscheme<cr>", desc = "Colorscheme picker" },
+			{ "<leader>:", desc = "Command history" },
 		},
 		dependencies = {
 			"nvim-lua/plenary.nvim",
@@ -38,6 +39,9 @@ return {
 			local builtin = require("telescope.builtin")
 			vim.keymap.set("n", "<leader>pf", builtin.find_files, { desc = "Search [P]roject [F]iles" })
 			vim.keymap.set("n", "<C-p>", builtin.git_files, { desc = "Search Git [P]roject Files" })
+
+			-- Command history with telescope (replaces q:)
+			vim.keymap.set("n", "<leader>:", builtin.command_history, { desc = "Command history" })
 
 			-- Add this in your telescope config section, after the other keymaps
 			vim.keymap.set("n", "<leader>gi", function()
@@ -545,7 +549,7 @@ return {
 				-- Disable "format_on_save lsp_fallback" for languages that don't
 				-- have a well standardized coding style. You can add additional
 				-- languages here or re-enable it for the disabled ones.
-				local disable_filetypes = { c = true, cpp = true }
+				local disable_filetypes = { awk = true }
 				if disable_filetypes[vim.bo[bufnr].filetype] then
 					return nil
 				else
@@ -554,6 +558,13 @@ return {
 						lsp_format = "never",
 					}
 				end
+			end,
+			format_after_save = function(bufnr)
+				local enable_filetypes = { awk = true }
+				if enable_filetypes[vim.bo[bufnr].filetype] then
+					return { timeout_ms = 5000, lsp_format = "never" }
+				end
+				return nil
 			end,
 			formatters_by_ft = {
 				markdown = { "prettierd", "prettier" },
@@ -570,7 +581,16 @@ return {
 				css = { "prettierd", "prettier", stop_after_first = true },
 				xml = { "xmlformatter" },
 				json = { "prettierd", "prettier", stop_after_first = true },
+				awk = { "awk" },
+				jsonc = { "prettierd", "prettier", stop_after_first = true },
 				toml = { "prettierd", "prettier", stop_after_first = true },
+			},
+
+			formatters = {
+				awk = {
+					command = "gawk",
+					args = { "-o-", "-f", "$FILENAME" },
+				},
 			},
 		},
 	},
@@ -692,11 +712,36 @@ return {
 
 	{ -- Highlight, edit, and navigate code
 		"nvim-treesitter/nvim-treesitter",
-		event = { "BufReadPost", "BufNewFile" }, -- This plugin is important enough to keep its original events
+		event = { "BufReadPost", "BufNewFile" },
 		build = ":TSUpdate",
 		main = "nvim-treesitter.configs",
 		config = function()
 			require("nvim-treesitter.configs").setup({
+				ensure_installed = {
+					"bash",
+					"python",
+					"rust",
+					"css",
+					"cpp",
+					"c",
+					"javascript",
+					"typescript",
+					"diff",
+					"html",
+					"lua",
+					"luadoc",
+					"markdown",
+					"markdown_inline",
+					"query",
+					"vim",
+					"vimdoc",
+				},
+				auto_install = true,
+				highlight = {
+					enable = true,
+					additional_vim_regex_highlighting = { "ruby" },
+				},
+				indent = { enable = true, disable = { "ruby" } },
 				textobjects = {
 					select = {
 						enable = true,
@@ -711,40 +756,11 @@ return {
 				},
 			})
 		end,
-		opts = {
-			ensure_installed = {
-				"bash",
-				"python",
-				"rust",
-				"css",
-				"cpp",
-				"c",
-				"javascript",
-				"typescript",
-				"diff",
-				"html",
-				"lua",
-				"luadoc",
-				"markdown",
-				"markdown_inline",
-				"query",
-				"vim",
-				"vimdoc",
-			},
-			auto_install = true,
-			highlight = {
-				enable = true,
-				additional_vim_regex_highlighting = { "ruby" },
-			},
-			indent = { enable = true, disable = { "ruby" } },
-		},
 	},
-
 	{
 		"nvim-treesitter/nvim-treesitter-textobjects",
 		dependencies = "nvim-treesitter/nvim-treesitter",
 	},
-
 	require("rpfarish.lazy.todo-comments"),
 	require("rpfarish.lazy.harpoon"),
 	require("rpfarish.lazy.undotree"),
