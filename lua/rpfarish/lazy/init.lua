@@ -432,7 +432,23 @@ return {
 						},
 					},
 				},
-				pyright = {},
+				pyright = {
+					settings = {
+						python = {
+							analysis = {
+								autoSearchPaths = true,
+								useLibraryCodeForTypes = true,
+								diagnosticMode = "workspace",
+								typeCheckingMode = "standard",
+								autoImportCompletions = true,
+								indexing = true,
+								-- Prefer original definitions
+								importFormat = "absolute",
+								completeFunctionParens = true,
+							},
+						},
+					},
+				},
 				rust_analyzer = {
 					settings = {
 						["rust-analyzer"] = {
@@ -579,6 +595,7 @@ return {
 				typescriptreact = { "prettierd", "prettier", stop_after_first = true },
 				javascriptreact = { "prettierd", "prettier", stop_after_first = true },
 				css = { "prettierd", "prettier", stop_after_first = true },
+				html = { "prettierd", "prettier", stop_after_first = true },
 				xml = { "xmlformatter" },
 				json = { "prettierd", "prettier", stop_after_first = true },
 				awk = { "awk" },
@@ -640,7 +657,14 @@ return {
 			-- snippets = { preset = "luasnip" },
 			fuzzy = { implementation = "lua" },
 
-			signature = { enabled = true },
+			signature = {
+				implementation = "lua",
+				use_typo_resistance = true,
+				use_frecency = true,
+				use_proximity = true,
+				-- This enables more flexible matching
+				max_items = 200,
+			},
 		},
 	},
 
@@ -776,4 +800,7 @@ return {
 	require("rpfarish.lazy.vim-be-good"),
 	require("rpfarish.lazy.which-key"),
 	require("rpfarish.lazy.git-signs"),
+	-- require("rpfarish.lazy.git-signs-oil"),
+	-- require("rpfarish.lazy.oil-git"),
+	-- require("rpfarish.lazy.oil-diag"),
 }

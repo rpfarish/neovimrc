@@ -25,12 +25,19 @@ set("n", "J", "mzJ`z", { desc = "Join lines keeping cursor position" })
 set("n", "<C-d>", "<C-d>zz", { desc = "Scroll down and center" })
 set("n", "<C-u>", "<C-u>zz", { desc = "Scroll up and center" })
 
--- Window Management
-set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
-set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
-set("n", "<C-S-j>", "<C-w>J", { desc = "Move window down" })
-set("n", "<C-S-k>", "<C-w>K", { desc = "Move window up" })
+-- Jump through quickfix list
+set("n", "<C-S-j>", "<cmd>cnext<CR>zz", { desc = "Next in quickfix" })
+set("n", "<C-S-k>", "<cmd>cprev<CR>zz", { desc = "Prev in quickfix" })
 
+-- Tmux commands
+vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
+
+-- -- Window Management
+-- set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
+-- set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
+-- set("n", "<C-S-j>", "<C-w>J", { desc = "Move window down" })
+-- set("n", "<C-S-k>", "<C-w>K", { desc = "Move window up" })
+--
 -- LSP
 set("n", "K", vim.lsp.buf.hover, { desc = "LSP Hover" })
 
