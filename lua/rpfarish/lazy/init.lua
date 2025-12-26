@@ -497,7 +497,7 @@ return {
 				"cssls",
 				"isort",
 				"lemminx",
-				-- "lua_ls",
+				"lua_ls",
 				"markdownlint",
 				"marksman",
 				"prettier",
@@ -657,14 +657,7 @@ return {
 			-- snippets = { preset = "luasnip" },
 			fuzzy = { implementation = "lua" },
 
-			signature = {
-				implementation = "lua",
-				use_typo_resistance = true,
-				use_frecency = true,
-				use_proximity = true,
-				-- This enables more flexible matching
-				max_items = 200,
-			},
+			signature = { enabled = true },
 		},
 	},
 
