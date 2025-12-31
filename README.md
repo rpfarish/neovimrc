@@ -1,6 +1,6 @@
 # Neovim Configuration
 
-![Dashboard](https://github.com/rpfarish/neovimrc/screenshots/rpfarish/dashboard.png)
+![Dashboard](https://github.com/rpfarish/neovimrc/blob/main/screenshots/dashboard.png)
 
 A practical Neovim setup focused on LSP, fuzzy finding, and efficient editing workflows.
 
