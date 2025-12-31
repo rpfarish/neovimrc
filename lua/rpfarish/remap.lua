@@ -5,9 +5,6 @@ local set = keymap.set
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
--- File Navigation
-set("n", "<leader>pv", "<CMD>Oil<CR>", { desc = "[P]roject [V]iew" })
-
 -- Terminal
 set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 
@@ -32,12 +29,6 @@ set("n", "<C-S-k>", "<cmd>cprev<CR>zz", { desc = "Prev in quickfix" })
 -- Tmux commands
 vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 
--- -- Window Management
--- set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
--- set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
--- set("n", "<C-S-j>", "<C-w>J", { desc = "Move window down" })
--- set("n", "<C-S-k>", "<C-w>K", { desc = "Move window up" })
---
 -- LSP
 set("n", "K", vim.lsp.buf.hover, { desc = "LSP Hover" })
 

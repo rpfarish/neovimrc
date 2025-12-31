@@ -1,6 +1,6 @@
 return {
 	"lewis6991/gitsigns.nvim",
-	event = "VeryLazy",
+	event = { "BufReadPost", "BufNewFile" }, -- Load with file, not at VimEnter
 	opts = {
 		on_attach = function(bufnr)
 			if vim.fn.isdirectory(".git") ~= 1 then

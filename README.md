@@ -1,177 +1,180 @@
-# NeoRyan: A Modern Neovim Configuration
+# Neovim Configuration
 
-<div align="center">
-  
-![NeoRyan](https://img.shields.io/badge/NeoRyan-Modern%20Neovim%20Config-8A2BE2?style=for-the-badge&logo=neovim&logoColor=white)
-[![Lua](https://img.shields.io/badge/Made%20with-Lua-2C2D72?style=for-the-badge&logo=lua&logoColor=white)](https://www.lua.org)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
-[![Neovim](https://img.shields.io/badge/Neovim-0.9%2B-57A143?style=for-the-badge&logo=neovim&logoColor=white)](https://neovim.io)
+![Dashboard](https://github.com/rpfarish/neovimrc/screenshots/rpfarish/dashboard.png)
 
-</div>
+A practical Neovim setup focused on LSP, fuzzy finding, and efficient editing workflows.
 
-<div align="center">
-<img src="/api/placeholder/800/400" alt="NeoRyan Screenshot">
-<p><em>A sleek, fast, and functional Neovim configuration for modern developers</em></p>
-</div>
+## Requirements
 
-## ✨ Features
-
-- 🚀 **Fast startup** with lazy-loaded plugins
-- 🎨 **Tokyo Night** colorscheme for a pleasant coding experience
-- 🔍 **Telescope** for fuzzy finding and powerful navigation
-- 🧠 **LSP integration** with advanced completions via blink.cmp
-- 🔄 **Format on save** with conform.nvim
-- 🌳 **Treesitter** for advanced syntax highlighting
-- 🖌️ **Git integration** with gitsigns.nvim
-- ⚡ **Ergonomic keymaps** for efficient workflow
-- 📝 **Todo comments** for better task management
-
-## 📦 Pre-requisites
-
-- Neovim >= 0.9.0
+- Neovim 0.11+
 - Git
-- A [Nerd Font](https://www.nerdfonts.com/) (optional but recommended)
-- `make` (for certain plugins)
-- Language servers (automatically installed via Mason)
-  
-Install dependencies on Arch linux:
-``` bash 
-sudo pacman -Sy --noconfirm --needed --disable-download-timeout gcc make git ripgrep fd unzip neovim python
-```
+- A Nerd Font (optional, for icons)
+- Basic build tools
 
-## 🚀 Installation
+### Install Dependencies (Arch Linux)
 
 ```bash
-# Backup your existing Neovim configuration if needed
+sudo pacman -Sy --noconfirm --needed gcc make git ripgrep fd unzip neovim python
+```
+
+## Installation
+
+```bash
+# Backup existing config
 mv ~/.config/nvim ~/.config/nvim.bak
 
 # Clone this repository
 git clone https://github.com/rpfarish/neovimrc.git ~/.config/nvim
 
-# Start Neovim - plugins will be installed automatically
+# Start Neovim (plugins install automatically)
 nvim
 ```
 
-## ⌨️ Key Bindings
+## Key Bindings
 
-NeoRyan uses Space as the leader key. Here are some of the most important keymaps:
+Leader key: `Space`
 
 ### General
 
-| Keybinding       | Description                    |
-| ---------------- | ------------------------------ |
-| `<Space>/`       | Fuzzy search in current buffer |
-| `<Space><Space>` | Find existing buffers          |
-| `<Esc>`          | Clear search highlighting      |
+| Key           | Action                   |
+| ------------- | ------------------------ |
+| `Space /`     | Search in current buffer |
+| `Space Space` | Switch buffers           |
+| `Esc`         | Clear search highlight   |
 
-### Search with Telescope
+### Telescope (Search)
 
-| Keybinding  | Description         |
-| ----------- | ------------------- |
-| `<Space>sf` | Search Files        |
-| `<Space>sg` | Search by Grep      |
-| `<Space>sh` | Search Help         |
-| `<Space>sk` | Search Keymaps      |
-| `<Space>s.` | Search Recent Files |
+| Key        | Action         |
+| ---------- | -------------- |
+| `Space sf` | Find files     |
+| `Space sg` | Live grep      |
+| `Space sh` | Search help    |
+| `Space sk` | Search keymaps |
+| `Space s.` | Recent files   |
+| `Space gd` | Grep git diff  |
 
-### LSP Navigation
+### LSP
 
-| Keybinding | Description                                                          |
-| ---------- | -------------------------------------------------------------------- |
-| `gd`       | Go to Definition (Overrides default vim gd in favor of lsp aware gd) |
-| `grr`      | Find References                                                      |
-| `grn`      | Rename                                                               |
-| `gra`      | Code Action                                                          |
-| `grt`      | Go to Type Definition                                                |
+| Key   | Action                |
+| ----- | --------------------- |
+| `gd`  | Go to definition      |
+| `grr` | Find references       |
+| `grn` | Rename symbol         |
+| `gra` | Code actions          |
+| `grt` | Go to type definition |
 
-### Window Management
+### Formatting (Includes format on write)
 
-| Keybinding | Description              |
+| Key       | Action        |
+| --------- | ------------- |
+| `Space f` | Format buffer |
+
+### File Navigation
+
+| Key | Action                      |
+| --- | --------------------------- |
+| `-` | Open parent directory (Oil) |
+
+### Terminal & Execution
+
+| Key        | Action                   |
 | ---------- | ------------------------ |
-| `<C-S-h>`  | Move window to the left  |
-| `<C-S-j>`  | Move window down         |
-| `<C-S-k>`  | Move window up           |
-| `<C-S-l>`  | Move window to the right |
+| `F5`       | Run current file         |
+| `Space af` | Toggle floating terminal |
+| `Esc Esc`  | Exit terminal mode       |
 
-### Formatting
+### Other
 
-| Keybinding | Description   |
-| ---------- | ------------- |
-| `<Space>f` | Format buffer |
+| Key        | Action                     |
+| ---------- | -------------------------- |
+| `Space u`  | Toggle undo tree           |
+| `Space q`  | Open diagnostics (Trouble) |
+| `Space th` | Toggle inlay hints         |
+| `Space tt` | Toggle transparency        |
 
-## 🔌 Included Plugins
+## Main Plugins
 
-NeoRyan includes a carefully curated selection of plugins:
+- **lazy.nvim** - Plugin manager
+- **telescope.nvim** - Fuzzy finder
+- **nvim-lspconfig** - LSP support
+- **blink.cmp** - Autocompletion
+- **conform.nvim** - Code formatting
+- **nvim-treesitter** - Syntax highlighting
+- **rose-pine** - Colorscheme
+- **oil.nvim** - File explorer
+- **harpoon** - Quick file navigation
+- **mini.nvim** - Text objects, surround, statusline
 
-- **[lazy.nvim](https://github.com/folke/lazy.nvim)** - Plugin manager
-- **[telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)** - Fuzzy finder
-- **[gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim)** - Git integration
-- **[blink.cmp](https://github.com/saghen/blink.cmp)** - Autocompletion
-- **[which-key.nvim](https://github.com/folke/which-key.nvim)** - Keybinding helper
-- **[nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)** - Advanced syntax highlighting
-- **[conform.nvim](https://github.com/stevearc/conform.nvim)** - Code formatting
-- **[tokyonight.nvim](https://github.com/folke/tokyonight.nvim)** - Colorscheme
-- **[mini.nvim](https://github.com/echasnovski/mini.nvim)** - Collection of small modules
-- **[todo-comments.nvim](https://github.com/folke/todo-comments.nvim)** - Highlight TODO comments
-- **[mason.nvim](https://github.com/mason-org/mason.nvim)** - Package manager for LSP servers
-
-## 🛠️ Configuration Structure
+## Configuration Structure
 
 ```
 ~/.config/nvim/
-├── init.lua                    # Main configuration entry point
+├── after/
+│   └── ftplugin/          # Filetype-specific keymaps
+│       ├── javascript.lua
+│       ├── python.lua
+│       └── rust.lua
 ├── lua/
-│   └── plugins/               # Plugin configurations
-└── lazy-lock.json             # Plugin version lock file
+│   └── rpfarish/
+│       ├── custom/        # Custom modules
+│       │   ├── attach.lua
+│       │   ├── commands.lua
+│       │   └── floterminal.lua
+│       ├── lazy/          # Plugin configurations
+│       ├── health.lua     # Health check
+│       ├── init.lua
+│       ├── remap.lua      # Keymaps
+│       └── set.lua        # Vim options
+├── init.lua
+├── lazy-lock.json
+└── LICENSE.md
 ```
 
-## 🎨 Customization
+## Customization
 
-### Changing the Colorscheme
+### Change Colorscheme
 
-Edit the colorscheme section in your configuration:
+Edit the colorscheme line in `lua/plugins/rosepine.lua`:
 
 ```lua
--- Try other variants: 'tokyonight-storm', 'tokyonight-moon', 'tokyonight-day'
-vim.cmd.colorscheme("tokyonight-night")
+vim.cmd("colorscheme rose-pine-moon")
+-- Try: rose-pine, rose-pine-dawn
 ```
 
-### Adding New LSP Servers
+### Add LSP Servers
 
-Add new servers to the `servers` table in the LSP configuration section:
+Add to the `servers` table in `lua/plugins/nvim-lsp.lua`:
 
 ```lua
 local servers = {
   pyright = {},
-  rust_analyzer = {},  -- Uncomment or add new ones
-  -- your_new_server = {},
+  your_server = {},
 }
 ```
 
-## 📋 Tips and Tricks
+### Configure Run Commands
 
-- Use `<Space>th` to toggle inlay hints when supported by the LSP
-- Use Mini.ai for enhanced text objects (try `va)`, `yi"`, etc.)
-- Use Mini.surround for surroundings (try `saiw)`, `sd'`, `sr)'`)
-- Take advantage of Telescope with `<Space>s` prefixed commands
+Edit `lua/rpfarish/custom/commands.lua` to add commands for different file types:
 
-## 🤝 Contributing
+```lua
+-- Example: Add Go support
+cmds.go = function()
+  return "go run ."
+end
+```
 
-Contributions are welcome! Feel free to submit issues or pull requests.
+Press `F5` to run the current file using the configured command.
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+## Tips
 
-## 📄 License
+- Use `F5` to quickly run Python (`uv run main.py`), Rust (`cargo run`), or JS/TS files
+- Floating terminal opens at 50% height at the bottom of the screen
+- Use `Space th` to toggle inlay hints
+- Text objects: `va)`, `yi"`, `ci'`
+- Surround: `saiw)` (add), `sd'` (delete), `sr)'` (replace)
+- Telescope supports multi-select with `Tab`
+- `Space tt` toggles background transparency for your terminal
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+## License
 
----
-
-<div align="center">
-  <p>⭐ If you find NeoRyan useful, please consider giving it a star on GitHub! ⭐</p>
-  <p>Made with ❤️ by Ryan</p>
-</div>
+MIT

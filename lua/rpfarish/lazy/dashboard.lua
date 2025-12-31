@@ -65,36 +65,56 @@ return {
 					"🏞️ To go touch grass, please press :q (or ZZ 💪 like a real man).",
 				},
 				shortcut_type = "letter",
+				project = {
+					limit = 2,
+					enable = true,
+				},
 				mru = {
+					limit = 7,
 					cwd_only = true,
 				},
 				shortcut = {
 					{
-						desc = "󰢻 Config", -- Cog/gear icon for configuration
+						desc = "󰢻 Config",
 						group = "Define",
-						action = "edit ~/.config/nvim/lua/rpfarish/lazy/init.lua",
+						action = function()
+							vim.cmd("cd ~/.config/nvim")
+							vim.cmd("edit lua/rpfarish/lazy/init.lua")
+						end,
 						key = "c",
 					},
 					{
-						desc = "󰈔 Files", -- Document/file icon
+						desc = "󰈔 New File",
 						group = "Label",
-						action = "Telescope find_files",
-						key = "f",
+						action = "enew",
+						key = "n",
 					},
 					{
-						desc = "󰒲 Lazy", -- Download/package icon
+						desc = "󰒲 Lazy",
 						group = "Number",
 						action = "Lazy",
 						key = "l",
 					},
 					{
-						desc = "󰒋 Mason", -- Box/package icon
+						desc = "󰒋 Mason",
 						group = "@property",
 						action = "Mason",
 						key = "m",
 					},
 				},
 			},
+		})
+
+		-- Additional filter to prevent ~ from being added to projects list
+		vim.api.nvim_create_autocmd("User", {
+			pattern = "DashboardReady",
+			callback = function()
+				-- This hooks into the dashboard after it's loaded
+				local home = vim.fn.expand("~")
+				vim.v.oldfiles = vim.tbl_filter(function(file)
+					return not vim.startswith(file, home .. "/.") and file ~= home
+				end, vim.v.oldfiles or {})
+			end,
 		})
 	end,
 	dependencies = { { "nvim-tree/nvim-web-devicons" } },
