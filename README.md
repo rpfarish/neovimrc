@@ -4,6 +4,22 @@
 
 A practical Neovim setup focused on LSP, fuzzy finding, and efficient editing workflows.
 
+## Supported Languages
+
+Preconfigured with LSP, formatting, and execution support for:
+
+- **Python** - Ruff (linting/formatting), executes with `uv run main.py`
+- **Rust** - rust-analyzer, rustfmt, Clippy, executes with `cargo run`
+- **JavaScript/TypeScript** - ts_ls, Prettierd, executes with `node`
+- **Lua** - lua_ls, Stylua
+- **C/C++** - clangd
+- **Markdown** - marksman, markdownlint
+- **CSS** - cssls, stylelint
+- **TOML** - taplo
+- **Typst** - typst LSP
+
+Treesitter syntax highlighting for: Bash, Python, Rust, CSS, C/C++, JavaScript, TypeScript, HTML, Lua, Markdown, Vim, and more.
+
 ## Requirements
 
 - Neovim 0.11+
@@ -36,22 +52,65 @@ Leader key: `Space`
 
 ### General
 
-| Key           | Action                   |
-| ------------- | ------------------------ |
-| `Space /`     | Search in current buffer |
-| `Space Space` | Switch buffers           |
-| `Esc`         | Clear search highlight   |
+| Key           | Action                         |
+| ------------- | ------------------------------ |
+| `Esc`         | Clear search highlight         |
+| `Space /`     | Fuzzy search in current buffer |
+| `Space Space` | Switch buffers                 |
+| `K`           | LSP hover documentation        |
+
+### Navigation & Movement
+
+| Key     | Action                               |
+| ------- | ------------------------------------ |
+| `C-d`   | Scroll down and center               |
+| `C-u`   | Scroll up and center                 |
+| `C-S-j` | Next in quickfix list                |
+| `C-S-k` | Previous in quickfix list            |
+| `J`     | Join lines (keeping cursor position) |
+
+### Text Editing
+
+| Key       | Action                             |
+| --------- | ---------------------------------- |
+| `Space p` | Paste without yanking (visual)     |
+| `Space d` | Delete to black hole register      |
+| `<`       | Indent left and reselect (visual)  |
+| `>`       | Indent right and reselect (visual) |
+
+### Harpoon (Quick File Navigation)
+
+| Key       | Action                        |
+| --------- | ----------------------------- |
+| `Space a` | Add file to Harpoon           |
+| `C-e`     | Toggle Harpoon menu           |
+| `C-j`     | Jump to Harpoon file 1        |
+| `C-k`     | Jump to Harpoon file 2        |
+| `C-l`     | Jump to Harpoon file 3        |
+| `C-h`     | Jump to Harpoon file 4        |
+| `Space j` | Previous file in Harpoon list |
+| `Space k` | Next file in Harpoon list     |
 
 ### Telescope (Search)
 
-| Key        | Action         |
-| ---------- | -------------- |
-| `Space sf` | Find files     |
-| `Space sg` | Live grep      |
-| `Space sh` | Search help    |
-| `Space sk` | Search keymaps |
-| `Space s.` | Recent files   |
-| `Space gd` | Grep git diff  |
+| Key        | Action                     |
+| ---------- | -------------------------- |
+| `Space pf` | Search project files       |
+| `C-p`      | Search git files           |
+| `Space sf` | Search files               |
+| `Space sg` | Live grep                  |
+| `Space sw` | Search current word        |
+| `Space sh` | Search help                |
+| `Space sk` | Search keymaps             |
+| `Space ss` | Select Telescope picker    |
+| `Space sd` | Search diagnostics         |
+| `Space sr` | Resume last search         |
+| `Space s.` | Recent files               |
+| `Space s/` | Search in open files       |
+| `Space sn` | Search Neovim config files |
+| `Space gd` | Grep git diff              |
+| `Space l`  | Colorscheme picker         |
+| `Space :`  | Command history            |
 
 ### LSP
 
@@ -61,19 +120,50 @@ Leader key: `Space`
 | `grr` | Find references       |
 | `grn` | Rename symbol         |
 | `gra` | Code actions          |
+| `gri` | Go to implementation  |
 | `grt` | Go to type definition |
+| `grD` | Go to declaration     |
+| `gO`  | Document symbols      |
+| `gW`  | Workspace symbols     |
 
-### Formatting (Includes format on write)
+### File Explorer (Oil.nvim)
+
+| Key       | Action                        |
+| --------- | ----------------------------- |
+| `-`       | Open parent directory         |
+| `Space -` | Open parent directory (float) |
+| `C-r`     | Refresh Oil (in Oil buffer)   |
+
+### Git (Gitsigns)
+
+| Key        | Action                   |
+| ---------- | ------------------------ |
+| `]c`       | Next git change          |
+| `[c`       | Previous git change      |
+| `Space hs` | Stage hunk               |
+| `Space hr` | Reset hunk               |
+| `Space hS` | Stage buffer             |
+| `Space hu` | Undo stage hunk          |
+| `Space hR` | Reset buffer             |
+| `Space hp` | Preview hunk             |
+| `Space hb` | Blame line               |
+| `Space hd` | Diff against index       |
+| `Space hD` | Diff against last commit |
+| `Space tD` | Toggle deleted preview   |
+
+### Dropbar (Breadcrumbs)
+
+| Key       | Action                 |
+| --------- | ---------------------- |
+| `Space ;` | Pick symbols in winbar |
+| `[;`      | Go to context start    |
+| `];`      | Select next context    |
+
+### Formatting
 
 | Key       | Action        |
 | --------- | ------------- |
 | `Space f` | Format buffer |
-
-### File Navigation
-
-| Key | Action                      |
-| --- | --------------------------- |
-| `-` | Open parent directory (Oil) |
 
 ### Terminal & Execution
 
@@ -83,14 +173,42 @@ Leader key: `Space`
 | `Space af` | Toggle floating terminal |
 | `Esc Esc`  | Exit terminal mode       |
 
-### Other
+### Diagnostics & Debugging
 
-| Key        | Action                     |
-| ---------- | -------------------------- |
-| `Space u`  | Toggle undo tree           |
-| `Space q`  | Open diagnostics (Trouble) |
-| `Space th` | Toggle inlay hints         |
-| `Space tt` | Toggle transparency        |
+| Key        | Action                               |
+| ---------- | ------------------------------------ |
+| `Space q`  | Diagnostics (Trouble)                |
+| `Space xX` | Buffer diagnostics (Trouble)         |
+| `Space cs` | Symbols (Trouble)                    |
+| `Space cl` | LSP definitions/references (Trouble) |
+| `Space xL` | Location list (Trouble)              |
+| `Space xQ` | Quickfix list (Trouble)              |
+| `Space td` | Todo list (Trouble)                  |
+| `Space tb` | Todo list current buffer (Trouble)   |
+
+### Utilities
+
+| Key        | Action                 |
+| ---------- | ---------------------- |
+| `Space u`  | Toggle undo tree       |
+| `Space U`  | Toggle undotree layout |
+| `Space th` | Toggle inlay hints     |
+| `Space tt` | Toggle transparency    |
+| `C-f`      | Open tmux-sessionizer  |
+
+### Text Objects (Mini.ai)
+
+Examples: `va)` (select around paren), `yinq` (yank inside next quote), `ci'` (change inside quote), `g[(` (go to left paren)
+
+### Surround (Mini.surround)
+
+Examples: `saiw)` (surround word with paren), `sd'` (delete quotes), `sr)'` (replace paren with quote)
+
+### Move (Mini.move)
+
+| Key           | Action              |
+| ------------- | ------------------- |
+| `C-A-h/j/k/l` | Move selection/line |
 
 ## Main Plugins
 
