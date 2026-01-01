@@ -31,7 +31,12 @@ return {
 	{
 		ft = "markdown",
 		"ellisonleao/glow.nvim",
-		config = true,
+		config = function()
+			require("glow").setup({
+				style = "dark", -- or "light"
+				width = 120,
+			})
+		end,
 		cmd = "Glow",
 		keys = {
 			{ "<leader>mp", ":Glow<CR>", desc = "Markdown Preview with Glow" },
@@ -40,7 +45,9 @@ return {
 	{
 		"iamcco/markdown-preview.nvim",
 		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-		build = "cd app && npm install",
+		build = "cd app && npm install && git restore .",
+		-- or if you use yarn: (I have not checked this, I use npm)
+		-- build = "cd app && yarn install && git restore .",
 		init = function()
 			vim.g.mkdp_filetypes = { "markdown" }
 		end,

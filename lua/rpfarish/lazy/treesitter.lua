@@ -2,8 +2,8 @@ return {
 	{ -- Highlight, edit, and navigate code
 		"nvim-treesitter/nvim-treesitter",
 		event = { "BufReadPost", "BufNewFile" },
+		branch = "master",
 		build = ":TSUpdate",
-		main = "nvim-treesitter.configs",
 		config = function()
 			require("nvim-treesitter.configs").setup({
 				ensure_installed = {
@@ -15,7 +15,6 @@ return {
 					"c",
 					"javascript",
 					"typescript",
-					"diff",
 					"html",
 					"lua",
 					"luadoc",
@@ -47,6 +46,7 @@ return {
 	},
 	{
 		"nvim-treesitter/nvim-treesitter-textobjects",
-		dependencies = "nvim-treesitter/nvim-treesitter",
+		dependencies = { "nvim-treesitter/nvim-treesitter" },
+		event = "VeryLazy",
 	},
 }

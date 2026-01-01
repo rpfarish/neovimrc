@@ -41,10 +41,6 @@ return {
 						["<CR>"] = { "select_and_accept", "fallback" },
 						["<S-Tab>"] = { "select_prev", "fallback" },
 					},
-					appearance = {
-						use_nvim_cmp_as_default = true,
-						nerd_font_variant = "mono",
-					},
 					sources = {
 						default = { "lsp", "path", "buffer", "lazydev" },
 						providers = {
@@ -55,11 +51,6 @@ return {
 						},
 					},
 					completion = {
-						accept = {
-							auto_brackets = {
-								enabled = true,
-							},
-						},
 						menu = {
 							draw = {
 								treesitter = { "lsp" },
@@ -74,7 +65,7 @@ return {
 						enabled = true,
 					},
 					fuzzy = {
-						implementation = "lua",
+						implementation = "prefer_rust_with_warning",
 					},
 				},
 				opts_extend = { "sources.default" },
@@ -302,9 +293,7 @@ return {
 				"taplo",
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
-			-- Add this to your plugin setup
 
-			-- Then in your config:
 			require("lint").linters_by_ft = {
 				markdown = { "markdownlint" },
 				css = { "stylelint" },
@@ -327,7 +316,9 @@ return {
 						end
 						local server = servers[server_name] or {}
 						server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-						require("lspconfig")[server_name].setup(server)
+						-- With config options
+						vim.lsp.config(server_name, server)
+						vim.lsp.enable(server_name)
 					end,
 				},
 			})

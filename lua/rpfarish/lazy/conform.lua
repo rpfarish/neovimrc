@@ -31,24 +31,24 @@ return { -- Autoformat
 		format_after_save = function(bufnr)
 			local enable_filetypes = { awk = true }
 			if enable_filetypes[vim.bo[bufnr].filetype] then
-				return { timeout_ms = 5000, lsp_format = "never" }
+				return { timeout_ms = 500, lsp_format = "never" }
 			end
 			return nil
 		end,
 		formatters_by_ft = {
-			css = { "prettierd" },
-			html = { "prettierd" },
-			jsonc = { "prettierd" },
-			javascript = { "prettierd" },
-			javascriptreact = { "prettierd" },
-			json = { "prettierd" },
 			lua = { "stylua" },
 			markdown = { "prettierd" },
+			css = { "prettierd" },
+			html = { "prettierd" },
+			javascript = { "prettierd" },
+			javascriptreact = { "prettierd" },
+			typescriptreact = { "prettierd" },
+			typescript = { "prettierd" },
+			jsonc = { "prettierd" },
+			json = { "prettierd" },
 			python = { "ruff_check", "ruff_format" },
 			rust = { "rustfmt" },
 			toml = { "taplo" },
-			typescript = { "prettierd" },
-			typescriptreact = { "prettierd" },
 		},
 
 		formatters = {

@@ -8,7 +8,7 @@ A practical Neovim setup focused on LSP, fuzzy finding, and efficient editing wo
 
 Preconfigured with LSP, formatting, and execution support for:
 
-- **Python** - Ruff (linting/formatting), executes with `uv run main.py`
+- **Python** - Ruff (linting/formatting), ty (lsp), executes with `uv run main.py`
 - **Rust** - rust-analyzer, rustfmt, Clippy, executes with `cargo run`
 - **JavaScript/TypeScript** - ts_ls, Prettierd, executes with `node`
 - **Lua** - lua_ls, Stylua
@@ -16,7 +16,6 @@ Preconfigured with LSP, formatting, and execution support for:
 - **Markdown** - marksman, markdownlint
 - **CSS** - cssls, stylelint
 - **TOML** - taplo
-- **Typst** - typst LSP
 
 Treesitter syntax highlighting for: Bash, Python, Rust, CSS, C/C++, JavaScript, TypeScript, HTML, Lua, Markdown, Vim, and more.
 

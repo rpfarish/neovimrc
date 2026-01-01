@@ -20,6 +20,10 @@ return {
 			harpoon.ui:toggle_quick_menu(harpoon:list())
 		end, { desc = "Harpoon: Toggle menu" })
 
+		vim.keymap.set("n", "<leader>e", function()
+			harpoon.ui:toggle_quick_menu(harpoon:list())
+		end, { desc = "Harpoon: Toggle menu" })
+
 		-- Jump to harpoon file 1
 		vim.keymap.set("n", "<C-j>", function()
 			harpoon:list():select(1)
