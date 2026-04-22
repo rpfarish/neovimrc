@@ -84,10 +84,10 @@ return {
 						key = "c",
 					},
 					{
-						desc = "󰈔 New File",
+						desc = "󰅩 Leetcode",
 						group = "Label",
-						action = "enew",
-						key = "n",
+						action = "Leet",
+						key = "p",
 					},
 					{
 						desc = "󰒲 Lazy",
@@ -126,3 +126,8 @@ return {
 -- 󰛥 (
 -- 󰒋
 -- 󰏔
+--󰒋 → tools / dev workflow (you already use this elsewhere)
+-- 󰅩 → code / brackets (very neutral)
+--
+--
+--

@@ -48,4 +48,16 @@ local rtp = vim.opt.rtp
 rtp:prepend(lazypath)
 
 -- [[ Configure and install plugins ]]
-require("lazy").setup(require("rpfarish.lazy"))
+require("lazy").setup({
+	spec = {
+		require("rpfarish.lazy"),
+	},
+	git = {
+		timeout = 300,
+	},
+	performance = {
+		cache = {
+			enabled = true,
+		},
+	},
+})

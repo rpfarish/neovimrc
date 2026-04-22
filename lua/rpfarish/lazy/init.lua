@@ -1,5 +1,7 @@
 return {
-	require("rpfarish.lazy.vim-sleuth"),
+	require("rpfarish.lazy.leetcode"),
+	-- require("rpfarish.lazy.vim-sleuth"),
+	require("rpfarish.lazy.guess-indent"),
 
 	require("rpfarish.lazy.telescope"),
 
@@ -25,4 +27,5 @@ return {
 	require("rpfarish.lazy.which-key"),
 	require("rpfarish.lazy.git-signs"),
 	require("rpfarish.lazy.dropbar"),
+	require("rpfarish.lazy.dressing"),
 }

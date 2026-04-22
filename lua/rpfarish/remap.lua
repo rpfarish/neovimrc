@@ -27,7 +27,7 @@ set("n", "<C-S-j>", "<cmd>cnext<CR>zz", { desc = "Next in quickfix" })
 set("n", "<C-S-k>", "<cmd>cprev<CR>zz", { desc = "Prev in quickfix" })
 
 -- Tmux commands
-vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
+vim.keymap.set("n", "<C-S-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 
 -- LSP
 set("n", "K", vim.lsp.buf.hover, { desc = "LSP Hover" })

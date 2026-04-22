@@ -10,9 +10,19 @@ return {
 		{ "<leader>ss", "<cmd>Telescope builtin<cr>", desc = "[S]earch [S]elect Telescope" },
 		{ "<leader>sw", "<cmd>Telescope grep_string<cr>", desc = "[S]earch current [W]ord" },
 		{ "<leader>sg", "<cmd>Telescope live_grep<cr>", desc = "[S]earch by [G]rep" },
-		{ "<leader>sd", "<cmd>Telescope diagnostics<cr>", desc = "[S]earch [D]iagnostics" },
+		{ "<leader>sc", "<cmd>Telescope commands<cr>", desc = "[S]earch [C]ommands" },
+		{
+			"<leader>sd",
+			function()
+				require("telescope.builtin").diagnostics(require("telescope.themes").get_ivy({
+					winblend = 10,
+				}))
+			end,
+			desc = "[S]earch [D]iagnostics",
+		},
 		{ "<leader>sr", "<cmd>Telescope resume<cr>", desc = "[S]earch [R]esume" },
 		{ "<leader>s.", "<cmd>Telescope oldfiles<cr>", desc = '[S]earch Recent Files ("." for repeat)' },
+		{ "<leader>so", "<cmd>Telescope oldfiles<cr>", desc = "[S]earch [O]ld Files" },
 		{ "<leader><leader>", "<cmd>Telescope buffers<cr>", desc = "[ ] Find existing buffers" },
 		{ "<leader>l", "<cmd>Telescope colorscheme<cr>", desc = "Colorscheme picker" },
 		{ "<leader>:", "<cmd>Telescope command_history<cr>", desc = "Command history" },
@@ -20,7 +30,7 @@ return {
 		{
 			"<leader>/",
 			function()
-				require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_ivy({
+				require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
 					winblend = 10,
 					previewer = false,
 				}))
