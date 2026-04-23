@@ -2,6 +2,7 @@ return {
 	require("rpfarish.lazy.leetcode"),
 	-- require("rpfarish.lazy.vim-sleuth"),
 	require("rpfarish.lazy.guess-indent"),
+	{ "xiantang/darcula-dark.nvim" },
 
 	require("rpfarish.lazy.telescope"),
 

@@ -6,7 +6,7 @@ return {
 		"MunifTanjim/nui.nvim",
 		"nvim-telescope/telescope.nvim",
 		"hrsh7th/nvim-cmp",
-		"nvim-treesitter/nvim-treesitter",
+		{ "nvim-treesitter/nvim-treesitter", branch = "main" },
 	},
 
 	opts = {

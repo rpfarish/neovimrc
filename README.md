@@ -1,4 +1,10 @@
-# Neovim Configuration
+#vim.schedule callback: /usr/share/nvim/runtime/lua/vim/treesitter/languagetree.lua:215: /usr/share/nvim/runtime/lua/vim/treesitter.lua:1
+96: attempt to call method 'range' (a nil value)  
+stack traceback:  
+ [C]: in function 'f'  
+ /usr/share/nvim/runtime/lua/vim/treesitter/languagetree.lua:215: in function 'tcall'  
+ /usr/share/nvim/runtime/lua/vim/treesitter/languagetree.lua:596: in function </usr/share/nvim/runtime/lua/vim/treesitter/languag
+etree.lua:579> Neovim Configuration
 
 ![Dashboard](https://github.com/rpfarish/neovimrc/blob/main/screenshots/dashboard.png)
 

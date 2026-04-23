@@ -14,6 +14,13 @@ vim.schedule(function()
 	vim.o.clipboard = "unnamedplus"
 end)
 
+-- -- Enable treesitter
+-- vim.api.nvim_create_autocmd("FileType", {
+-- 	callback = function()
+-- 		pcall(vim.treesitter.start)
+-- 	end,
+-- })
+
 -- [[ Basic Autocommands ]]
 vim.api.nvim_create_autocmd("TextYankPost", { --xclip
 	desc = "Highlight when yanking (copying) text",
